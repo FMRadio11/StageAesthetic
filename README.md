@@ -20,6 +20,7 @@
 - Maybe add unused monsters and regional variants
 - Maybe add events for Bloody Mist Roost/Grove and other unusual stages
 
+- If you have questions not appropriate for github, I have a discord server here: https://discord.gg/xjAWykGByy
 ## CHANGELOG
 
 ### 1.0.0
