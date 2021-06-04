@@ -308,12 +308,13 @@ namespace VisionsExpose
                 {
                     int counter = UnityEngine.Random.Range(1, 3);
                     // If Seasons was activated and Grove hadn't had it previously, this line adds Shrine of the Woods to both variants.
-                    if (seasonActive && !groveCheck) DirectorAPI.Helpers.AddNewInteractableToStage(MonsterLists.woodShrine, DirectorAPI.InteractableCategory.Shrines, DirectorAPI.Stage.SunderedGrove);
+                    // NOTE: THIS CODE HAS BEEN DISABLED TEMPORARILY DUE TO ISSUES WITH THE SPAWN CARD
+                    // if (seasonActive && !groveCheck) DirectorAPI.Helpers.AddNewInteractableToStage(MonsterLists.woodShrine, DirectorAPI.InteractableCategory.Shrines, DirectorAPI.Stage.SunderedGrove);
                     // Due to the above, this if statement needed to be expanded to two lines.
                     if (!seasonActive && groveCheck)
                     {
                         // Removing the Shrine of the Woods...
-                        DirectorAPI.Helpers.RemoveExistingInteractableFromStage(DirectorAPI.Helpers.InteractableNames.WoodsShrine, DirectorAPI.Stage.SunderedGrove);
+                        //DirectorAPI.Helpers.RemoveExistingInteractableFromStage(DirectorAPI.Helpers.InteractableNames.WoodsShrine, DirectorAPI.Stage.SunderedGrove);
                         // And applying the same change as above if the alt palette was the last one in memory.
                         if (groveVariant == 2) MonsterLists.GroveOne();
                     }

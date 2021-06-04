@@ -3,7 +3,7 @@ using BepInEx;
 
 namespace VisionsExpose
 {
-    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.0.1")]
+    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.0.4")]
     [R2APISubmoduleDependency(new string[]
     {
         "DirectorAPI",
