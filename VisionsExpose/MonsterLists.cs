@@ -235,7 +235,7 @@ namespace VisionsExpose
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVulture", DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
-            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsWisp, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.ScorchedAcres);
+            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsWisp, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void AcresReset()
@@ -314,49 +314,48 @@ namespace VisionsExpose
         }
         public static void MeadowTwo()
         {
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBell", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-            Debug.Log("List two active.");
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBell", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void MeadowThree()
         {
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish0, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsBall, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsGolem, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-            Debug.Log("List three active.");
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish0, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsBall, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsGolem, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SkyMeadow);
+            DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void MeadowReset()
         {
             if (meadowVariant == 2)
             {
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImp", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImp", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             }
             if (meadowVariant == 3)
             {
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarGolem", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarExploder", DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
-                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.Custom, "skymeadow");
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarGolem", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarExploder", DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             }
-            Debug.Log("Monsters reset.");
         }
         public static void CardSetup()
         {
@@ -382,7 +381,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscVulture"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 2,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -391,7 +390,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLemurianBruiser"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 2,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -400,7 +399,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBeetleGuard"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -409,7 +408,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscHermitCrab"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 1,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -418,7 +417,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscGolem"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -427,7 +426,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscRoboBallMini"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 1,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -445,7 +444,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscImp"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -454,7 +453,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLemurianBruiser"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -472,7 +471,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscVulture"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -481,7 +480,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscVulture"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 3,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -508,7 +507,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLesserWisp"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -517,7 +516,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscGreaterWisp"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -526,7 +525,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscJellyfish"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 1,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -541,7 +540,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscMiniMushroom"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -550,7 +549,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscParent"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -568,7 +567,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBeetle"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -577,7 +576,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBell"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -595,7 +594,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLemurian"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -613,7 +612,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscMiniMushroom"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 5,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -622,7 +621,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscJellyfish"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -640,7 +639,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscRoboBallMini"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -685,7 +684,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscBison"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -693,7 +692,7 @@ namespace VisionsExpose
             zenithDesignsWisp = new DirectorCard
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLunarWisp"),
-                selectionWeight = 10,
+                selectionWeight = 30,
                 allowAmbushSpawn = false,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
@@ -702,7 +701,7 @@ namespace VisionsExpose
             zenithDesignsGolem = new DirectorCard
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLunarGolem"),
-                selectionWeight = 10,
+                selectionWeight = 30,
                 allowAmbushSpawn = false,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
@@ -711,8 +710,8 @@ namespace VisionsExpose
             zenithDesignsBall = new DirectorCard
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscLunarExploder"),
-                selectionWeight = 2,
-                allowAmbushSpawn = false,
+                selectionWeight = 5,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 0,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
@@ -721,7 +720,7 @@ namespace VisionsExpose
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscClayBruiser"),
                 selectionWeight = 1,
-                allowAmbushSpawn = false,
+                allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 2,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard

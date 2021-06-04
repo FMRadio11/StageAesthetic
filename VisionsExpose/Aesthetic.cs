@@ -340,22 +340,17 @@ namespace VisionsExpose
                     if (Run.instance.stageClearCount >= 5 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
                     bool useList = meadowVariant != counter || !meadowCheck;
-                    if (seasonActive)
-                    {
-                        if (meadowVariant != 1 && meadowVariant != counter) MonsterLists.MeadowReset();
-                        meadowCheck = true;
-                    }
+                    if (seasonActive && meadowVariant != 1 && meadowVariant != counter) MonsterLists.MeadowReset();
                     if (!seasonActive && meadowCheck)
                     {
                         if (meadowVariant != 1) MonsterLists.MeadowReset();
                         DirectorAPI.Helpers.TryApplyChangesNow();
-                        meadowCheck = false;
                     }
-                    Debug.Log(meadowVariant);
-                    Debug.Log(counter);
+                    meadowCheck = seasonActive;
                     switch (counter)
                     {
                         case 1:
+                            DirectorAPI.Helpers.TryApplyChangesNow();
                             break;
                         case 2:
                             NightMeadow(fog);
@@ -376,23 +371,23 @@ namespace VisionsExpose
         }
         private static void NightMeadow(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.1f, 0.05f, 0.16f, 0.8f);
-            fog.fogColorMid.value = new Color(0.16f, 0.09f, 0.24f, 0.9f);
-            fog.fogColorEnd.value = new Color(0.22f, 0.13f, 0.32f, 1f);
+            fog.fogColorStart.value = new Color(0.13f, 0.065f, 0.19f, 0.6f);
+            fog.fogColorMid.value = new Color(0.19f, 0.11f, 0.28f, 0.775f);
+            fog.fogColorEnd.value = new Color(0.25f, 0.155f, 0.36f, 0.95f);
             fog.skyboxStrength.value = 0.08f;
         }
         private static void NightDark(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.15f, 0.09f, 0.05f, 0.65f);
-            fog.fogColorMid.value = new Color(0.18f, 0.105f, 0.07f, 0.8f);
+            fog.fogColorStart.value = new Color(0.15f, 0.09f, 0.05f, 0.6f);
+            fog.fogColorMid.value = new Color(0.18f, 0.105f, 0.07f, 0.775f);
             fog.fogColorEnd.value = new Color(0.21f, 0.12f, 0.08f, 0.95f);
             fog.skyboxStrength.value = 0.06f;
         }
         private static void NightEvening(RampFog fog)
         {
             fog.fogColorStart.value = new Color(0.1f, 0.14f, 0.2f, 0.55f);
-            fog.fogColorMid.value = new Color(0.16f, 0.22f, 0.3f, 0.75f);
-            fog.fogColorEnd.value = new Color(0.22f, 0.3f, 0.4f, 0.95f);
+            fog.fogColorMid.value = new Color(0.16f, 0.22f, 0.3f, 0.7f);
+            fog.fogColorEnd.value = new Color(0.22f, 0.3f, 0.4f, 0.9f);
             fog.skyboxStrength.value = 0.1f;
         }
         private static void Overcast(RampFog fog)
@@ -414,7 +409,7 @@ namespace VisionsExpose
             cgrade.colorFilter.value = new Color(0.16f, 0.08f, 0.075f);
             fog.fogColorStart.value = new Color(0.12f, 0.03f, 0.01f, 0.6f);
             fog.fogColorMid.value = new Color(0.24f, 0.06f, 0.02f, 0.8f);
-            fog.fogColorEnd.value = new Color(0.37f, 0.1f, 0.04f, 1f);
+            fog.fogColorEnd.value = new Color(0.37f, 0.1f, 0.04f, 0.95f);
             fog.skyboxStrength.value = 0f;
             Chat.AddMessage("<color=#C3E8E8>A bloody mist fills the air...</color>");
         }
@@ -461,7 +456,6 @@ namespace VisionsExpose
             fog.fogColorStart.value = new Color(0.1f, 0.1f, 0.1f, 0.6f);
             fog.fogColorMid.value = new Color(0.22f, 0.15f, 0.14f, 0.8f);
             fog.fogColorEnd.value = new Color(0.34f, 0.2f, 0.18f, 1f);
-            Chat.AddMessage("<color=#C3E8E8>An unnatural shadow lies over the depths...</color>");
         }
         private static void PlainsSunset(RampFog fog, String scenename)
         {
@@ -496,7 +490,6 @@ namespace VisionsExpose
         public static int currentVariant;
         public static AssetBundle artifactIcon;
         public static ArtifactDef seasons;
-        public static ArtifactDef dissonance = ArtifactCatalog.FindArtifactDef("MixEnemy");
         public static bool seasonActive;
         public static bool groveCheck = false;
         public static bool plainsCheck = false;
@@ -508,6 +501,5 @@ namespace VisionsExpose
         public static bool depthsCheck = false;
         public static bool sirenCheck = false;
         public static bool meadowCheck = false;
-        public static Color32 lightBlue = new Color32(195, 232, 232, 255);
     }
 }
