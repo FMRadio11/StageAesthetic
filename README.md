@@ -24,6 +24,9 @@
 
 ## CHANGELOG
 
+### 0.0.3
+- Fixing a mistake in the Thunderstore upload, nothing here is changed
+
 ### 0.0.2
 - Reduced the mid/end colors' transparency of some RampFog effects for clarity
 - Upped the brightness of Night!Sky Meadow
