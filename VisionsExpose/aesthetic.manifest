@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 762745618
+CRC: 4047224155
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: b7d1f2901debff21ea3f0556ddb5f48f
+    Hash: 4c003d33f39a3cc4c150bbf0f0e10e4c
   TypeTreeHash:
     serializedVersion: 2
     Hash: ea5a42e0fd8ea905efa7aa926a3b8944
@@ -14,6 +14,6 @@ ClassTypes:
 - Class: 213
   Script: {instanceID: 0}
 Assets:
-- Assets/seasonson.png
 - Assets/seasonsoff.png
+- Assets/seasonson.png
 Dependencies: []

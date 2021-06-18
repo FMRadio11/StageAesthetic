@@ -22,12 +22,15 @@ namespace VisionsExpose
             DirectorAPI.Helpers.AddNewMonsterToStage(vulture5, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
             DirectorAPI.Helpers.AddNewMonsterToStage(miniMushruum5, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
             DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish0, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
-            if (Run.instance.stageClearCount >= 2)
+            if (StageRestriction.Value)
             {
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.TitanicPlains);
-                plainsVagrant = true;
+                if (Run.instance.stageClearCount >= 2)
+                {
+                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.TitanicPlains);
+                    plainsVagrant = true;
+                    DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
+                }
             }
-            DirectorAPI.Helpers.AddNewMonsterToStage(magmaPlains, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
             DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWormPlains, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -50,7 +53,8 @@ namespace VisionsExpose
                 DirectorAPI.Helpers.AddNewMonsterToStage(hermitCrab, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
                 DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
                 DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
-                if (Run.instance.stageClearCount >= 2 && plainsVagrant == true)
+                bool vagrantCheck = Run.instance.stageClearCount >= 2 || !StageRestriction.Value;
+                if (vagrantCheck && plainsVagrant == true)
                 {
                     DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
                     plainsVagrant = false;
@@ -61,8 +65,19 @@ namespace VisionsExpose
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.AddNewMonsterToStage(solusProbeRoost, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
-            if (Run.instance.stageClearCount >= 2) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
-            DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnitRoost, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+            if (StageRestriction.Value)
+            {
+                if (Run.instance.stageClearCount >= 2)
+                {
+                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
+                    DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                }
+            }
+            else
+            {
+                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
+                DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+            }
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void RoostThree()
@@ -83,7 +98,12 @@ namespace VisionsExpose
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallMini", DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.DistantRoost);
-                if (Run.instance.stageClearCount >= 2) DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                bool queenCheck = Run.instance.stageClearCount >= 2 || !StageRestriction.Value;
+                if (queenCheck && roostQueen)
+                {
+                    DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                    roostQueen = false;
+                }
                 DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
             }
             if (roostVariant == 3)
@@ -359,15 +379,6 @@ namespace VisionsExpose
         }
         public static void CardSetup()
         {
-            magmaPlains = new DirectorCard
-            {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscMagmaWorm"),
-                selectionWeight = 1,
-                allowAmbushSpawn = false,
-                preventOverhead = false,
-                minimumStageCompletions = 2,
-                spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
-            };
             overloadingWormPlains = new DirectorCard
             {
                 spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscElectricWorm"),
@@ -429,15 +440,6 @@ namespace VisionsExpose
                 allowAmbushSpawn = true,
                 preventOverhead = false,
                 minimumStageCompletions = 1,
-                spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
-            };
-            solusControlUnitRoost = new DirectorCard
-            {
-                spawnCard = Resources.Load<CharacterSpawnCard>("SpawnCards/CharacterSpawnCards/cscRoboBallBoss"),
-                selectionWeight = 1,
-                allowAmbushSpawn = false,
-                preventOverhead = false,
-                minimumStageCompletions = 2,
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
             imp = new DirectorCard
@@ -726,7 +728,6 @@ namespace VisionsExpose
                 spawnDistance = DirectorCore.MonsterSpawnDistance.Standard
             };
         }
-        public static DirectorCard magmaPlains;
         public static DirectorCard overloadingWormPlains;
         public static DirectorCard vulture5;
         public static DirectorCard elderLem5;
@@ -734,7 +735,6 @@ namespace VisionsExpose
         public static DirectorCard hermitCrab;
         public static DirectorCard stoneGolem;
         public static DirectorCard solusProbeRoost;
-        public static DirectorCard solusControlUnitRoost;
         public static DirectorCard imp;
         public static DirectorCard elderLem;
         public static DirectorCard impOverlord;
@@ -768,5 +768,6 @@ namespace VisionsExpose
         public static DirectorCard clayTemplar;
         public static DirectorCard vultureAcres;
         public static bool plainsVagrant;
+        public static bool roostQueen;
     }
 }

@@ -1,15 +1,20 @@
 ﻿using System;
 using R2API;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using UnityEngine;
 using RoR2;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
+using UnityEngine.Networking;
 using System.Reflection;
 using System.IO;
+using BepInEx;
+using BepInEx.Configuration;
 
 namespace VisionsExpose
 {
-    
+
     public class Aesthetic
     {
         public static void Nice()
@@ -18,10 +23,16 @@ namespace VisionsExpose
             {
                 artifactIcon = AssetBundle.LoadFromStream(iconStream);
             }
+            ConfigSetup();
             SeasonsSetup();
             MonsterLists.CardSetup();
-            Debug.Log(MonsterLists.vulture5.spawnCard.name);
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
+        }
+        private static void ConfigSetup()
+        {
+            AesConfig = new ConfigFile(Paths.ConfigPath + "\\StageAesthetic.cfg", true);
+            CommencementAlt = AesConfig.Bind<bool>("Core", "Commencement alt?", true, "Enable this to use the alternate palette of Commencement. Note that this will break if you enter Commencement without clearing a stage first!");
+            StageRestriction = AesConfig.Bind<bool>("Core", "Restrict variants/bosses to stage count?", true, "Some variants and bosses will only appear after a certain amount of stages are clear. Disabling this will increase the likelihood of horde encounters early.");
         }
         private static void SeasonsSetup()
         {
@@ -29,7 +40,9 @@ namespace VisionsExpose
             seasons.smallIconSelectedSprite = artifactIcon.LoadAsset<Sprite>("seasonson");
             seasons.smallIconDeselectedSprite = artifactIcon.LoadAsset<Sprite>("seasonsoff");
             seasons.nameToken = "Artifact of Seasons";
-            seasons.descriptionToken = "Alternate stage palettes now use their own monster/interactable lists. Will probably break Dissonance/Kin.";
+            String seasonsDesc = "Alternate stage palettes now use their own monster lists.";
+            if (StageRestriction.Value) seasonsDesc = seasonsDesc + " Some palettes will not appear until a certain stage count is met.";
+            seasons.descriptionToken = seasonsDesc;
             seasons.unlockableDef = null;
             seasons.pickupModelPrefab = null;
             ArtifactAPI.Add(seasons);
@@ -53,16 +66,24 @@ namespace VisionsExpose
                 if (alt) volume = alt.GetComponent<PostProcessVolume>();
                 else volume = null;
             }
-            if (volume)
+            if (volume && scenename != "moon2")
             {
                 // Needed for the aesthetical portion of the mod
                 RampFog fog = volume.profile.GetSetting<RampFog>();
+                if (Run.instance.stageClearCount == 0 && CommencementAlt.Value)
+                {
+                    commencementVolume = volume.profile;
+                    Debug.Log("Commencement volume set: " + commencementVolume);
+                }
                 // Moving onto the big list of stage changes. I'll comment the Titanic Plains one for context, but the rest won't be.
                 // Due to Titanic Plains and Distant Roost having two different variations, the if statement for them is an OR check for both.
                 if (scenename == "golemplains" || scenename == "golemplains2")
                 {
                     // Setting up a random number between 1-3. This shouldn't give 4, but if it does I think it just returns the default stage.
                     int counter = UnityEngine.Random.Range(1, 4);
+                    // This should??? sync clients to use the same variant in multiplayer, but I haven't had a chance to test it.
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     // Setting up a bool to check whether A. the variant used is the same as before or B. Seasons was not previously active on this stage.
                     bool useList = plainsVariant != counter || !plainsCheck;
                     // Checking for whether the Seasons artifact is active, and that the previous variant wasn't either 1 or identical to the one being prepared. If all of these are true, PlainsReset() is run to clear out any previous monster changes.
@@ -88,7 +109,7 @@ namespace VisionsExpose
                             if (seasonActive && useList) MonsterLists.PlainsTwo(); // Checks for whether Seasons is active and whether the bool described above was passed. If both are true, the monsters on this stage are changed.
                             break;
                         case 3:
-                            Overcast(fog); // Changes the stage to the Overcast palette.
+                            Overcast(fog, scenename); // Changes the stage to the Overcast palette.
                             if (seasonActive && useList) MonsterLists.PlainsThree(); // Same as PlainsTwo().
                             break;
                         default:
@@ -103,9 +124,12 @@ namespace VisionsExpose
                 {
                     // This works more or less the same way as Titanic Plains, but introduces two new factors. The first is a differing switch statement depending on whether or not you've reached a certain stage count (3+ in this case).
                     int counter = 1;
-                    if (Run.instance.stageClearCount >= 2 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
+                    if (Run.instance.stageClearCount >= 2 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     // This omits the third variant unless the above condition is passed, giving a 50/50 chance for the other two.
                     else counter = UnityEngine.Random.Range(1, 3);
+                    networkCounter = counter;
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     bool useList = roostVariant != counter || !roostCheck;
                     if (seasonActive && roostVariant != 1 && roostVariant != counter) MonsterLists.RoostReset();
                     if (!seasonActive && roostCheck)
@@ -126,7 +150,7 @@ namespace VisionsExpose
                         case 3:
                             // This also introduces ColorGrading, which is a filter applied on the screen itself. Only the RedMist() variants and AbyssalShadow() use this.
                             ColorGrading cgrade = volume.profile.AddSettings<ColorGrading>();
-                            RedMist(fog, cgrade);
+                            RoostMist(fog, cgrade);
                             if (seasonActive && useList) MonsterLists.RoostThree();
                             break;
                         default:
@@ -138,8 +162,11 @@ namespace VisionsExpose
                 if (scenename == "foggyswamp")
                 {
                     int counter = 1;
-                    if (Run.instance.stageClearCount >= 4 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
+                    if (Run.instance.stageClearCount >= 4 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
+                    networkCounter = counter;
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     bool useList = wetlandVariant != counter || !wetlandCheck;
                     if (seasonActive && wetlandVariant != 1 && wetlandVariant != counter) MonsterLists.WetlandReset();
                     if (!seasonActive && wetlandCheck)
@@ -187,7 +214,7 @@ namespace VisionsExpose
                             if (seasonActive && useList) MonsterLists.AqueductTwo();
                             break;
                         case 3:
-                            Overcast(fog);
+                            Overcast(fog, scenename);
                             if (seasonActive && useList) MonsterLists.AqueductThree();
                             break;
                         default:
@@ -199,8 +226,10 @@ namespace VisionsExpose
                 if (scenename == "frozenwall")
                 {
                     int counter = 1;
-                    if (Run.instance.stageClearCount >= 3 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
+                    if (Run.instance.stageClearCount >= 3 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     bool useList = deltaVariant != counter || !deltaCheck;
                     if (seasonActive && deltaVariant != 1 && deltaVariant != counter) MonsterLists.DeltaReset();
                     if (!seasonActive && deltaCheck)
@@ -231,8 +260,10 @@ namespace VisionsExpose
                 if (scenename == "wispgraveyard")
                 {
                     int counter = 1;
-                    if (Run.instance.stageClearCount >= 3 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
+                    if (Run.instance.stageClearCount >= 3 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     bool useList = acresVariant != counter || !acresCheck;
                     if (seasonActive && acresVariant != 1 && acresVariant != counter) MonsterLists.AcresReset();
                     if (!seasonActive && acresCheck)
@@ -264,6 +295,8 @@ namespace VisionsExpose
                 {
                     // This one works a bit differently due to only having two variants.
                     int counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     // Only one if statement is needed here due to how the options here work.
                     if (!seasonActive && depthsCheck && depthsVariant == 2) MonsterLists.DepthsOne();
                     depthsCheck = seasonActive;
@@ -287,6 +320,8 @@ namespace VisionsExpose
                 if (scenename == "shipgraveyard")
                 {
                     int counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     if (!seasonActive && sirenCheck && sirenVariant == 2) MonsterLists.SirenOne();
                     sirenCheck = seasonActive;
                     switch (counter)
@@ -307,6 +342,8 @@ namespace VisionsExpose
                 if (scenename == "rootjungle")
                 {
                     int counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     // If Seasons was activated and Grove hadn't had it previously, this line adds Shrine of the Woods to both variants.
                     // NOTE: THIS CODE HAS BEEN DISABLED TEMPORARILY DUE TO ISSUES WITH THE SPAWN CARD
                     // if (seasonActive && !groveCheck) DirectorAPI.Helpers.AddNewInteractableToStage(MonsterLists.woodShrine, DirectorAPI.InteractableCategory.Shrines, DirectorAPI.Stage.SunderedGrove);
@@ -314,7 +351,7 @@ namespace VisionsExpose
                     if (!seasonActive && groveCheck)
                     {
                         // Removing the Shrine of the Woods...
-                        //DirectorAPI.Helpers.RemoveExistingInteractableFromStage(DirectorAPI.Helpers.InteractableNames.WoodsShrine, DirectorAPI.Stage.SunderedGrove);
+                        // DirectorAPI.Helpers.RemoveExistingInteractableFromStage(DirectorAPI.Helpers.InteractableNames.WoodsShrine, DirectorAPI.Stage.SunderedGrove);
                         // And applying the same change as above if the alt palette was the last one in memory.
                         if (groveVariant == 2) MonsterLists.GroveOne();
                     }
@@ -338,8 +375,10 @@ namespace VisionsExpose
                 if (scenename == "skymeadow")
                 {
                     int counter = 1;
-                    if (Run.instance.stageClearCount >= 5 || !seasonActive) counter = UnityEngine.Random.Range(1, 4);
+                    if (Run.instance.stageClearCount >= 5 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
+                    new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    counter = networkCounter;
                     bool useList = meadowVariant != counter || !meadowCheck;
                     if (seasonActive && meadowVariant != 1 && meadowVariant != counter) MonsterLists.MeadowReset();
                     if (!seasonActive && meadowCheck)
@@ -367,19 +406,35 @@ namespace VisionsExpose
                     }
                     meadowVariant = counter;
                 }
+
+            }
+            else if (scenename == "moon2" && CommencementAlt.Value)
+            {
+                volume = currentScene.gameObject.AddComponent<PostProcessVolume>();
+                volume.enabled = true;
+                volume.isGlobal = true;
+                volume.priority = 9999f;
+                volume.profile = commencementVolume;
+                RampFog fog = volume.profile.GetSetting<RampFog>();
+                fog.fogColorStart.value = new Color(0.06f, 0.07f, 0.12f, 0.4f);
+                fog.fogColorMid.value = new Color(0.13f, 0.14f, 0.19f, 0.625f);
+                fog.fogColorEnd.value = new Color(0.2f, 0.21f, 0.27f, 0.75f);
+                fog.skyboxStrength.value = 0f;
             }
             else Debug.Log("Post process volume could not be found.");
         }
         private static void NightMeadow(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.13f, 0.065f, 0.19f, 0.6f);
-            fog.fogColorMid.value = new Color(0.19f, 0.11f, 0.28f, 0.775f);
-            fog.fogColorEnd.value = new Color(0.25f, 0.155f, 0.36f, 0.95f);
+            // Fog makes up 95% of the graphical changes this mod makes. The three Colors below determine how the stage appears at the following:
+            fog.fogColorStart.value = new Color(0.13f, 0.065f, 0.19f, 0.4f); // At close range, roughly 30-40m or so?
+            fog.fogColorMid.value = new Color(0.19f, 0.11f, 0.28f, 0.775f); // Past that point, up to quite a ways in the distance
+            fog.fogColorEnd.value = new Color(0.25f, 0.155f, 0.36f, 0.95f); // How stuff looks at a very far range
+            // This determines how strongly the skybox's appearance shines through. A very low value, like what's used here, means more of the End fog color bleeds through.
             fog.skyboxStrength.value = 0.08f;
         }
         private static void NightDark(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.15f, 0.09f, 0.05f, 0.6f);
+            fog.fogColorStart.value = new Color(0.15f, 0.09f, 0.05f, 0.4f);
             fog.fogColorMid.value = new Color(0.18f, 0.105f, 0.07f, 0.775f);
             fog.fogColorEnd.value = new Color(0.21f, 0.12f, 0.08f, 0.95f);
             fog.skyboxStrength.value = 0.06f;
@@ -387,20 +442,27 @@ namespace VisionsExpose
         private static void NightEvening(RampFog fog)
         {
             fog.fogColorStart.value = new Color(0.1f, 0.14f, 0.2f, 0.55f);
-            fog.fogColorMid.value = new Color(0.16f, 0.22f, 0.3f, 0.7f);
-            fog.fogColorEnd.value = new Color(0.22f, 0.3f, 0.4f, 0.9f);
+            fog.fogColorMid.value = new Color(0.16f, 0.22f, 0.3f, 0.675f);
+            fog.fogColorEnd.value = new Color(0.22f, 0.3f, 0.4f, 0.8f);
             fog.skyboxStrength.value = 0.1f;
         }
-        private static void Overcast(RampFog fog)
+        private static void Overcast(RampFog fog, String scenename)
         {
             fog.fogColorStart.value = new Color(0.15f, 0.21f, 0.3f, 0.55f);
             fog.fogColorMid.value = new Color(0.19f, 0.28f, 0.4f, 0.75f);
             fog.fogColorEnd.value = new Color(0.24f, 0.35f, 0.5f, 0.95f);
+            if (scenename == "goolake")
+            {
+                fog.fogColorEnd.value.b = 0.45f;
+                fog.fogColorEnd.value.r = 0.29f;
+                fog.fogColorMid.value.b = 0.365f;
+                fog.fogColorMid.value.r = 0.22f;
+            }
             fog.skyboxStrength.value = 0.125f;
         }
         private static void Misty(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.3f, 0.3f, 0.325f, 0.3f);
+            fog.fogColorStart.value = new Color(0.3f, 0.3f, 0.325f, 0.2f);
             fog.fogColorMid.value = new Color(0.49f, 0.51f, 0.55f, 0.6f);
             fog.fogColorEnd.value = new Color(0.575f, 0.6f, 0.67f, 0.9f);
             fog.skyboxStrength.value = 0.1f;
@@ -408,15 +470,24 @@ namespace VisionsExpose
         private static void RedMist(RampFog fog, ColorGrading cgrade)
         {
             cgrade.colorFilter.value = new Color(0.16f, 0.08f, 0.075f);
-            fog.fogColorStart.value = new Color(0.12f, 0.03f, 0.01f, 0.6f);
-            fog.fogColorMid.value = new Color(0.24f, 0.06f, 0.02f, 0.8f);
-            fog.fogColorEnd.value = new Color(0.37f, 0.1f, 0.04f, 0.95f);
+            fog.fogColorStart.value = new Color(0.12f, 0.03f, 0.01f, 0.4f);
+            fog.fogColorMid.value = new Color(0.24f, 0.06f, 0.02f, 0.725f);
+            fog.fogColorEnd.value = new Color(0.37f, 0.1f, 0.04f, 0.85f);
             fog.skyboxStrength.value = 0f;
+            Chat.AddMessage("<color=#C3E8E8>A bloody mist fills the air...</color>");
+        }
+        private static void RoostMist(RampFog fog, ColorGrading cgrade)
+        {
+            cgrade.colorFilter.value = new Color(0.16f, 0.08f, 0.075f);
+            fog.fogColorStart.value = new Color(0.09f, 0.03f, 0.13f, 0.4f);
+            fog.fogColorMid.value = new Color(0.18f, 0.06f, 0.18f, 0.725f);
+            fog.fogColorEnd.value = new Color(0.37f, 0.1f, 0.25f, 0.85f);
+            fog.skyboxStrength.value = 0.03f;
             Chat.AddMessage("<color=#C3E8E8>A bloody mist fills the air...</color>");
         }
         private static void AcresSky(RampFog fog)
         {
-            fog.fogColorStart.value = new Color(0.3f, 0.28f, 0.26f, 0.3f);
+            fog.fogColorStart.value = new Color(0.3f, 0.28f, 0.26f, 0.2f);
             fog.fogColorMid.value = new Color(0.49f, 0.43f, 0.41f, 0.65f);
             fog.fogColorEnd.value = new Color(0.533f, 0.627f, 0.588f, 1f);
             fog.skyboxStrength.value = 0.45f;
@@ -453,10 +524,10 @@ namespace VisionsExpose
         }
         private static void AbyssalShadow(RampFog fog, ColorGrading cgrade)
         {
-            cgrade.colorFilter.value = new Color(0.16f, 0.08f, 0.075f);
-            fog.fogColorStart.value = new Color(0.1f, 0.1f, 0.1f, 0.6f);
-            fog.fogColorMid.value = new Color(0.22f, 0.15f, 0.14f, 0.8f);
-            fog.fogColorEnd.value = new Color(0.34f, 0.2f, 0.18f, 1f);
+            cgrade.colorFilter.value = new Color(0.08f, 0.16f, 0.075f);
+            fog.fogColorStart.value = new Color(0.1f, 0.1f, 0.1f, 0.4f);
+            fog.fogColorMid.value = new Color(0.1875f, 0.2f, 0.14f, 0.8f);
+            fog.fogColorEnd.value = new Color(0.28f, 0.3f, 0.19f, 1f);
         }
         private static void PlainsSunset(RampFog fog, String scenename)
         {
@@ -477,6 +548,35 @@ namespace VisionsExpose
             fog.fogZero.value = -0.049f;
             fog.fogOne.value = 0.211f;
         }
+        // I have no idea if any of this is correct...
+        public class AestheticSync : INetMessage
+        {
+            int variant;
+            public void Deserialize(NetworkReader reader)
+            {
+                variant = reader.ReadInt32();
+            }
+            public void OnReceived()
+            {
+                if (NetworkServer.active) return;
+                Debug.Log("Networking attempted: setting to "+variant);
+                networkCounter = variant;
+            }
+            public void Serialize(NetworkWriter writer)
+            {
+                networkCounter = variant;
+                Debug.Log("Attempting networking: sending out "+networkCounter);
+                writer.Write(variant);
+            }
+            public AestheticSync()
+            {
+            }
+            public AestheticSync(int num)
+            {
+                variant = num;
+            }
+        }
+        public static int networkCounter;
         public static PostProcessVolume volume;
         public static int plainsVariant = 1;
         public static int roostVariant = 1;
@@ -502,5 +602,9 @@ namespace VisionsExpose
         public static bool depthsCheck = false;
         public static bool sirenCheck = false;
         public static bool meadowCheck = false;
+        public static ConfigFile AesConfig { get; set; }
+        public static ConfigEntry<bool> CommencementAlt { get; set; }
+        public static ConfigEntry<bool> StageRestriction { get; set; }
+        public static PostProcessProfile commencementVolume;
     }
 }
