@@ -33,6 +33,7 @@ namespace VisionsExpose
             AesConfig = new ConfigFile(Paths.ConfigPath + "\\StageAesthetic.cfg", true);
             CommencementAlt = AesConfig.Bind<bool>("Core", "Commencement alt?", true, "Enable this to use the alternate palette of Commencement. Note that this will break if you enter Commencement without clearing a stage first!");
             StageRestriction = AesConfig.Bind<bool>("Core", "Restrict variants/bosses to stage count?", true, "Some variants and bosses will only appear after a certain amount of stages are clear. Disabling this will increase the likelihood of horde encounters early.");
+            BossConfig = AesConfig.Bind<bool>("Mod Compatibility", "BossConfig compatibility?", false, "Set this to true to remove the boss-specific changes Artifact of Seasons makes.");
         }
         private static void SeasonsSetup()
         {
@@ -82,8 +83,8 @@ namespace VisionsExpose
                     // Setting up a random number between 1-3. This shouldn't give 4, but if it does I think it just returns the default stage.
                     int counter = UnityEngine.Random.Range(1, 4);
                     // This should??? sync clients to use the same variant in multiplayer, but I haven't had a chance to test it.
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     // Setting up a bool to check whether A. the variant used is the same as before or B. Seasons was not previously active on this stage.
                     bool useList = plainsVariant != counter || !plainsCheck;
                     // Checking for whether the Seasons artifact is active, and that the previous variant wasn't either 1 or identical to the one being prepared. If all of these are true, PlainsReset() is run to clear out any previous monster changes.
@@ -128,8 +129,8 @@ namespace VisionsExpose
                     // This omits the third variant unless the above condition is passed, giving a 50/50 chance for the other two.
                     else counter = UnityEngine.Random.Range(1, 3);
                     networkCounter = counter;
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     bool useList = roostVariant != counter || !roostCheck;
                     if (seasonActive && roostVariant != 1 && roostVariant != counter) MonsterLists.RoostReset();
                     if (!seasonActive && roostCheck)
@@ -165,8 +166,8 @@ namespace VisionsExpose
                     if (Run.instance.stageClearCount >= 4 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
                     networkCounter = counter;
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     bool useList = wetlandVariant != counter || !wetlandCheck;
                     if (seasonActive && wetlandVariant != 1 && wetlandVariant != counter) MonsterLists.WetlandReset();
                     if (!seasonActive && wetlandCheck)
@@ -228,8 +229,8 @@ namespace VisionsExpose
                     int counter = 1;
                     if (Run.instance.stageClearCount >= 3 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     bool useList = deltaVariant != counter || !deltaCheck;
                     if (seasonActive && deltaVariant != 1 && deltaVariant != counter) MonsterLists.DeltaReset();
                     if (!seasonActive && deltaCheck)
@@ -262,8 +263,8 @@ namespace VisionsExpose
                     int counter = 1;
                     if (Run.instance.stageClearCount >= 3 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     bool useList = acresVariant != counter || !acresCheck;
                     if (seasonActive && acresVariant != 1 && acresVariant != counter) MonsterLists.AcresReset();
                     if (!seasonActive && acresCheck)
@@ -295,8 +296,8 @@ namespace VisionsExpose
                 {
                     // This one works a bit differently due to only having two variants.
                     int counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     // Only one if statement is needed here due to how the options here work.
                     if (!seasonActive && depthsCheck && depthsVariant == 2) MonsterLists.DepthsOne();
                     depthsCheck = seasonActive;
@@ -320,8 +321,8 @@ namespace VisionsExpose
                 if (scenename == "shipgraveyard")
                 {
                     int counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     if (!seasonActive && sirenCheck && sirenVariant == 2) MonsterLists.SirenOne();
                     sirenCheck = seasonActive;
                     switch (counter)
@@ -342,8 +343,8 @@ namespace VisionsExpose
                 if (scenename == "rootjungle")
                 {
                     int counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     // If Seasons was activated and Grove hadn't had it previously, this line adds Shrine of the Woods to both variants.
                     // NOTE: THIS CODE HAS BEEN DISABLED TEMPORARILY DUE TO ISSUES WITH THE SPAWN CARD
                     // if (seasonActive && !groveCheck) DirectorAPI.Helpers.AddNewInteractableToStage(MonsterLists.woodShrine, DirectorAPI.InteractableCategory.Shrines, DirectorAPI.Stage.SunderedGrove);
@@ -377,8 +378,8 @@ namespace VisionsExpose
                     int counter = 1;
                     if (Run.instance.stageClearCount >= 5 || !seasonActive || !StageRestriction.Value) counter = UnityEngine.Random.Range(1, 4);
                     else counter = UnityEngine.Random.Range(1, 3);
-                    new AestheticSync(counter).Send(NetworkDestination.Clients);
-                    counter = networkCounter;
+                    //new AestheticSync(counter).Send(NetworkDestination.Clients);
+                    //counter = networkCounter;
                     bool useList = meadowVariant != counter || !meadowCheck;
                     if (seasonActive && meadowVariant != 1 && meadowVariant != counter) MonsterLists.MeadowReset();
                     if (!seasonActive && meadowCheck)
@@ -549,7 +550,7 @@ namespace VisionsExpose
             fog.fogOne.value = 0.211f;
         }
         // I have no idea if any of this is correct...
-        public class AestheticSync : INetMessage
+        /*public class AestheticSync : INetMessage
         {
             int variant;
             public void Deserialize(NetworkReader reader)
@@ -575,7 +576,7 @@ namespace VisionsExpose
             {
                 variant = num;
             }
-        }
+        }*/
         public static int networkCounter;
         public static PostProcessVolume volume;
         public static int plainsVariant = 1;
@@ -605,6 +606,7 @@ namespace VisionsExpose
         public static ConfigFile AesConfig { get; set; }
         public static ConfigEntry<bool> CommencementAlt { get; set; }
         public static ConfigEntry<bool> StageRestriction { get; set; }
+        public static ConfigEntry<bool> BossConfig { get; set; }
         public static PostProcessProfile commencementVolume;
     }
 }

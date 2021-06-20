@@ -15,7 +15,7 @@ namespace VisionsExpose
     {
         public void Awake()
         {
-            NetworkingAPI.RegisterMessageType<Aesthetic.AestheticSync>();
+            //NetworkingAPI.RegisterMessageType<Aesthetic.AestheticSync>();
             Aesthetic.Nice();
         }
     }

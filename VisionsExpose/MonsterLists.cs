@@ -26,12 +26,12 @@ namespace VisionsExpose
             {
                 if (Run.instance.stageClearCount >= 2)
                 {
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.TitanicPlains);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.TitanicPlains);
                     plainsVagrant = true;
-                    DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
                 }
             }
-            DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWormPlains, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWormPlains, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.TitanicPlains);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void PlainsReset()
@@ -46,8 +46,8 @@ namespace VisionsExpose
             if (plainsVariant == 3)
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVulture", DirectorAPI.Stage.TitanicPlains);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.TitanicPlains);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.TitanicPlains);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.TitanicPlains);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.TitanicPlains);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.TitanicPlains);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMiniMushroom", DirectorAPI.Stage.TitanicPlains);
                 DirectorAPI.Helpers.AddNewMonsterToStage(hermitCrab, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
@@ -56,7 +56,7 @@ namespace VisionsExpose
                 bool vagrantCheck = Run.instance.stageClearCount >= 2 || !StageRestriction.Value;
                 if (vagrantCheck && plainsVagrant == true)
                 {
-                    DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.TitanicPlains);
                     plainsVagrant = false;
                 }
             }
@@ -69,14 +69,14 @@ namespace VisionsExpose
             {
                 if (Run.instance.stageClearCount >= 2)
                 {
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
-                    DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
                 }
             }
             else
             {
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
-                DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.DistantRoost);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
             }
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -85,11 +85,11 @@ namespace VisionsExpose
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGreaterWisp", DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.DistantRoost);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.DistantRoost);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.AddNewMonsterToStage(vulture, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.AddNewMonsterToStage(elderLem, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.DistantRoost);
-            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void RoostReset()
@@ -97,11 +97,11 @@ namespace VisionsExpose
             if (roostVariant == 2)
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallMini", DirectorAPI.Stage.DistantRoost);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.DistantRoost);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.DistantRoost);
                 bool queenCheck = Run.instance.stageClearCount >= 2 || !StageRestriction.Value;
                 if (queenCheck && roostQueen)
                 {
-                    DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
                     roostQueen = false;
                 }
                 DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
@@ -111,31 +111,31 @@ namespace VisionsExpose
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImp", DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVulture", DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLemurianBruiser", DirectorAPI.Stage.DistantRoost);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpOverlord", DirectorAPI.Stage.DistantRoost);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpOverlord", DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.AddNewMonsterToStage(greaterWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.DistantRoost);
                 DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.DistantRoost);
-                DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.DistantRoost);
             }
         }
         public static void WetlandTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGolem", DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBell", DirectorAPI.Stage.WetlandAspect);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.WetlandAspect);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.AddNewMonsterToStage(beetleGuard, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.AddNewMonsterToStage(greaterWisp, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.WetlandAspect);
-            DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void WetlandThree()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGolem", DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetle", DirectorAPI.Stage.WetlandAspect);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.WetlandAspect);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.AddNewMonsterToStage(miniMushruum, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.AddNewMonsterToStage(parent, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.WetlandAspect);
-            DirectorAPI.Helpers.AddNewMonsterToStage(grandParent, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(grandParent, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void WetlandReset()
@@ -144,27 +144,27 @@ namespace VisionsExpose
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleGuard", DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGreaterWisp", DirectorAPI.Stage.WetlandAspect);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.WetlandAspect);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.AddNewMonsterToStage(stoneGolem, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
-                DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
             }
             if (wetlandVariant == 3)
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMiniMushroom", DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscParent", DirectorAPI.Stage.WetlandAspect);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGrandparent", DirectorAPI.Stage.WetlandAspect);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGrandparent", DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.AddNewMonsterToStage(stoneGolem, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.WetlandAspect);
                 DirectorAPI.Helpers.AddNewMonsterToStage(beetle, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.WetlandAspect);
-                DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.WetlandAspect);
             }
         }
         public static void AqueductTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLemurian", DirectorAPI.Stage.AbandonedAqueduct);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanGooLake", DirectorAPI.Stage.AbandonedAqueduct);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanGooLake", DirectorAPI.Stage.AbandonedAqueduct);
             DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.AbandonedAqueduct);
-            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.AbandonedAqueduct);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.AbandonedAqueduct);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void AqueductThree()
@@ -180,9 +180,9 @@ namespace VisionsExpose
             if (aqueductVariant == 2)
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImp", DirectorAPI.Stage.AbandonedAqueduct);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.AbandonedAqueduct);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.AbandonedAqueduct);
                 DirectorAPI.Helpers.AddNewMonsterToStage(lemurian, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.AbandonedAqueduct);
-                DirectorAPI.Helpers.AddNewMonsterToStage(aqueductTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.AbandonedAqueduct);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(aqueductTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.AbandonedAqueduct);
             }
             if (aqueductVariant == 3)
             {
@@ -195,25 +195,25 @@ namespace VisionsExpose
         public static void DeltaTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.AddNewMonsterToStage(solusProbe, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.AddNewMonsterToStage(roostTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(roostTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void DeltaThree()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLemurian", DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGolem", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.AddNewMonsterToStage(beetleGuard, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.AddNewMonsterToStage(vulture, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
-            DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(beetleQueen, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void DeltaReset()
@@ -223,32 +223,32 @@ namespace VisionsExpose
                 if (deltaVariant == 2)
                 {
                     DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallMini", DirectorAPI.Stage.RallypointDelta);
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.RallypointDelta);
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanBlackBeach", DirectorAPI.Stage.RallypointDelta);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.RallypointDelta);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanBlackBeach", DirectorAPI.Stage.RallypointDelta);
                     DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.RallypointDelta);
                 }
                 if (deltaVariant == 3)
                 {
                     DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleGuard", DirectorAPI.Stage.RallypointDelta);
                     DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVulture", DirectorAPI.Stage.RallypointDelta);
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.RallypointDelta);
-                    DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.RallypointDelta);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.RallypointDelta);
+                    if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleQueen", DirectorAPI.Stage.RallypointDelta);
                     DirectorAPI.Helpers.AddNewMonsterToStage(lemurian, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.RallypointDelta);
                     DirectorAPI.Helpers.AddNewMonsterToStage(bison, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.RallypointDelta);
                 }
-                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
-                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
-                DirectorAPI.Helpers.AddNewMonsterToStage(clayDunestrider, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(clayDunestrider, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.RallypointDelta);
             }
         }
         public static void AcresTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBeetleGuard", DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBruiser", DirectorAPI.Stage.ScorchedAcres);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.ScorchedAcres);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.AddNewMonsterToStage(stoneGolem, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.AddNewMonsterToStage(elderLem, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
-            DirectorAPI.Helpers.AddNewMonsterToStage(aqueductTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.ScorchedAcres);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(aqueductTitan, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.ScorchedAcres);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void AcresThree()
@@ -264,10 +264,10 @@ namespace VisionsExpose
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGolem", DirectorAPI.Stage.ScorchedAcres);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLemurianBruiser", DirectorAPI.Stage.ScorchedAcres);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanGooLake", DirectorAPI.Stage.ScorchedAcres);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscTitanGooLake", DirectorAPI.Stage.ScorchedAcres);
                 DirectorAPI.Helpers.AddNewMonsterToStage(beetleGuard, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
                 DirectorAPI.Helpers.AddNewMonsterToStage(clayTemplar, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.ScorchedAcres);
-                DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.ScorchedAcres);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.ScorchedAcres);
             }
             if (acresVariant == 3)
             {
@@ -294,63 +294,63 @@ namespace VisionsExpose
         }
         public static void SirenTwo()
         {
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SirensCall);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SirensCall);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBell", DirectorAPI.Stage.SirensCall);
             DirectorAPI.Helpers.AddNewMonsterToStage(parent, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SirensCall);
-            DirectorAPI.Helpers.AddNewMonsterToStage(grandParent, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SirensCall);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(grandParent, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SirensCall);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void SirenOne()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscParent", DirectorAPI.Stage.SirensCall);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGrandparent", DirectorAPI.Stage.SirensCall);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGrandparent", DirectorAPI.Stage.SirensCall);
             DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SirensCall);
-            DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SirensCall);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SirensCall);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void GroveTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLemurian", DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscClayBoss", DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(grovetender, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void GroveOne()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImp", DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscGravekeeper", DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.AddNewMonsterToStage(lemurian, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish0, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
-            DirectorAPI.Helpers.AddNewMonsterToStage(clayDunestrider, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(clayDunestrider, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SunderedGrove);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void MeadowTwo()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscBell", DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscRoboBallBoss", DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.AddNewMonsterToStage(imp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(impOverlord, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
         public static void MeadowThree()
         {
             DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLesserWisp", DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscMagmaWorm", DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscElectricWorm", DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.AddNewMonsterToStage(jellyfish0, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsBall, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
-            DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+            if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(wanderingVagrant, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.AddNewMonsterToStage(zenithDesignsGolem, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SkyMeadow);
             DirectorAPI.Helpers.TryApplyChangesNow();
         }
@@ -362,19 +362,19 @@ namespace VisionsExpose
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SkyMeadow);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscImpBoss", DirectorAPI.Stage.SkyMeadow);
                 DirectorAPI.Helpers.AddNewMonsterToStage(brassContraption, DirectorAPI.MonsterCategory.Minibosses, DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(solusControlUnit, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             }
             if (meadowVariant == 3)
             {
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscJellyfish", DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscVagrant", DirectorAPI.Stage.SkyMeadow);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarGolem", DirectorAPI.Stage.SkyMeadow);
                 DirectorAPI.Helpers.RemoveExistingMonsterFromStage("cscLunarExploder", DirectorAPI.Stage.SkyMeadow);
                 DirectorAPI.Helpers.AddNewMonsterToStage(lesserWisp, DirectorAPI.MonsterCategory.BasicMonsters, DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
-                DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(magmaWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
+                if (!BossConfig.Value) DirectorAPI.Helpers.AddNewMonsterToStage(overloadingWorm, DirectorAPI.MonsterCategory.Champions, DirectorAPI.Stage.SkyMeadow);
             }
         }
         public static void CardSetup()
