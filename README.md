@@ -1,23 +1,46 @@
-## OVERVIEW
-- All normal stages except for Commencement and the Stage 4s (so not including any Hidden Realms or other stages that don't advance the stage count once you clear them) will roll for either vanilla or one of two alts. The Stage 4s only have one alt each, as you'd pick between three of them normally.
-- If an alt is selected, the stage's post-processing (mostly just RampFog, but a couple of them also mess with ColorGrading) will be altered to give the stage a slightly different appearance. For example, Titanic Plains can either have a bluer appearance with a darker sky (similar to the console launch trailer, except it isn't overcast), or something resembling the sunset you see in one of the PC trailers.
-- Adds in Artifact of Seasons (unlocked by default for now; I'd like to tie it to Artifact Reliquary later on). If enabled, all alts will replace some of their enemies with ones more appropriate to the new color scheme; for example, the blue alt for Titanic Plains switches the spawning of Jellyfish and Lesser Wisps, and can spawn Magma Worm instead of Wandering Vagrant if your stage count is 3 or higher.
+## GITHUB NOTES
+- If you see files from the 0.0.5 and 0.0.6 updates, ignore those - they're redundant with the new file directory.
 
-## KNOWN ISSUES
-- Haven't had a chance to test it yet, but Kin and Dissonance will probably break with this
-- I'm not sure if this mod causes it, but some monsters throw a lot of errors (Grandparent in particular will occasionally cause heavy lag with M2)
-- Starstorm 2's storm effects are incompatible with this mod atm, they override the RampFog effect I use
+## OVERVIEW
+- All normal stages except for Commencement (so not including any Hidden Realms or other stages that don't advance the stage count once you clear them) will roll for either vanilla or a variant. Commencement has a single variant that will always be on. If desired, any color scheme (including the vanilla stage) can be disabled in config.
+- If a variant is selected, changes are made to post-processing (mostly RampFog), global lighting, and (if needed) individual props to alter the stage's appearance. For example, the variants included for Titanic Plains are inspired from various trailers - an orange one from very early footage of the game, and an overcast one vaguely similar to the console trailer.
+- Some unused stage props (most notably the border statues in Abandoned Aqueduct) may be enabled.
 
 ## TODO
-THIS MOD IS CURRENTLY ON HIATUS. I'll still fix bugs that come up, but I have other projects I want to work on before coming back to stuff here...
-- Add rain effects once I figure out how tf SobelRain works
-- Add a proper spawncard for Shrine of the Woods
-- Figure out a solution to lighting issues in Sky Meadow
-- Maybe add unused monsters and regional variants
-- Expand on certain variants more, mostly the Mist variants of Distant Roost/Sundered Grove and the Lunar variants of Scorched Acres/Sky Meadow
-- If you have questions/suggestions, either use the GitHub link above or contact me at my modding discord server: https://discord.gg/xjAWykGByy
+I don't have any plans to tackle these right now due to life stuff, but possibly coming sometime in the next decade:
+- Reintroduce Artifact of Seasons once it's become more stable
+- Look at compatibility with other mods
+- Add more variants
+- Update to DLC once that rolls in
+
+I've taken down my modding server for now. If you have questions, message me on discord or use the github link above.
+
+## KNOWN BUGS
+- Light effects on the crystals in Night Distant Roost do not have shadows. This is vanilla behavior, and I've decided to leave it in to aid visibility
+- Embers still appear in Night Scorched Acres despite it being raining. I've had no luck so far trying to disable them, so...
+- Certain stages still have clashing spots on the skybox, notably Distant Roost and especially Rallypoint Delta
+- The water in Rallypoint Delta does not change color with the stage. I have no idea how to fix this
+
+### Shoutout to HIFU for helping me get lighting effects working and providing some templates!
 
 ## CHANGELOG
+
+### 0.1.0
+- A Lot Happened
+- Temporarily removed Artifact of Seasons and all associated components. In its current state, it's just too much of a spaghetti code mess for me to want to try fixing at the moment, and there's other mods out there already if you want to mess around with enemies.
+- Rewrote directory to not have like 99% of this mod's content in just two files, hopefully should be easier to sort through the GitHub now
+- Implemented do-while loop to force a different choice when a stage is reloaded
+- Config added to disable variants as well as the original stage appearance (if all options are deselected for whatever reason, the vanilla stage is used)
+- Every existing variant was heavily altered or replaced entirely, adding in lighting effects and focusing on making them less glaring
+- Added a second set of variants to Abyssal Depths, Siren's Call, and Scorched Acres. My original reasoning was that there were already three Stage 4s, but with recent mods that randomize or lock stage order, it's not a good excuse anymore
+- Added config to make changes to the lighting of vanilla stages (enabled by default)
+- Added unused stage props and/or altered existing props to fit certain variants
+- Rain effect now shows up in some variants. This WILL break if you never load into the title screen, so config is provided to disable it if you're doing that for whatever reason
+
+### 0.0.6
+- Removing networking attempt, as it A. doesn't work and B. seems to be affecting variant rolls
+- Added config for BossConfig compatibility
+- Couldn't update GitHub with this, will try to fix later
 
 ### 0.0.5
 - Recolored variants in Roost, Aqueduct, and Depths
@@ -33,7 +56,8 @@ THIS MOD IS CURRENTLY ON HIATUS. I'll still fix bugs that come up, but I have ot
 - Disabled Shrine of the Woods being added to Sundered Grove; it was causing the stage to not spawn interactables at all
 
 ### 0.0.3
-- Nothing happened here
+- Dammit I forgot to add the new dll file
+- Updated internal number
 
 ### 0.0.2
 - Reduced the mid/end colors' transparency of some RampFog effects for clarity
