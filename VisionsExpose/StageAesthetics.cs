@@ -2,20 +2,21 @@
 using R2API.Networking;
 using BepInEx;
 
-namespace VisionsExpose
+namespace StageAesthetic
 {
-    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.0.5")]
+    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.1.0")]
     [R2APISubmoduleDependency(new string[]
     {
         "DirectorAPI",
         "ArtifactAPI",
-        "NetworkingAPI"
+        "NetworkingAPI",
+        "PrefabAPI"
     })]
     class StageAesthetics : BaseUnityPlugin 
     {
         public void Awake()
         {
-            //NetworkingAPI.RegisterMessageType<Aesthetic.AestheticSync>();
+            Aesthetic.AesLog = this.Logger;
             Aesthetic.Nice();
         }
     }

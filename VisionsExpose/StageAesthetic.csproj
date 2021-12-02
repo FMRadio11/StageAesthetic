@@ -5,12 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="aesthetic" />
+    <Compile Remove="AestheticBackup.cs" />
+    <Compile Remove="MonsterLists.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="aesthetic.manifest" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="aesthetic" />
     <EmbeddedResource Include="aesthetic.manifest" />
   </ItemGroup>
 
@@ -30,6 +33,12 @@
     <Reference Include="BepInEx.Preloader">
       <HintPath>..\..\CommandoPlus\libs\BepInEx.Preloader.dll</HintPath>
     </Reference>
+    <Reference Include="HGCSharpUtils">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\HGCSharpUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="HGUnityUtils">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\HGUnityUtils.dll</HintPath>
+    </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
       <HintPath>..\..\FMCommando\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -47,6 +56,12 @@
     </Reference>
     <Reference Include="Unity.Postprocessing.Runtime">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\CommandoPlus\libs\UnityEngine.dll</HintPath>
@@ -74,6 +89,9 @@
     </Reference>
     <Reference Include="UnityEngine.UIElementsModule">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="Zio">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Risk of Rain 2\Risk of Rain 2_Data\Managed\Zio.dll</HintPath>
     </Reference>
   </ItemGroup>
 
