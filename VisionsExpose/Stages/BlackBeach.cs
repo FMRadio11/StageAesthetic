@@ -59,7 +59,6 @@ namespace StageAesthetic.Stages
                 Transform base3 = base1.Find("GROUP: Gates").Find("DownstairsGate, Open");
                 lightArray = new Transform[] { base2.Find("BbRuinMarker_LOD0 (16)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (17)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (18)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (20)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (21)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (22)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (23)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (24)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (27)").Find("BbRuinBowl"), base2.Find("BbRuinMarker_LOD0 (2)").Find("BbRuinBowl (1)"), base3.Find("BbRuinMarker_LOD0 (12)").Find("BbRuinBowl"), base3.Find("BbRuinMarker_LOD0 (13)").Find("BbRuinBowl") };
             }
-            Debug.Log("checking bowls...");
             foreach (Transform bowl in lightArray)
             {
                 Light bowlLight = bowl.Find("Point light").gameObject.GetComponent<Light>();

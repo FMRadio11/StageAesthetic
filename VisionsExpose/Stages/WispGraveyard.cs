@@ -44,6 +44,21 @@ namespace StageAesthetic.Stages
             sunLight.shadowBias = 0.05f;
             lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
             if (AestheticConfig.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
+            var dummylist = UnityEngine.Object.FindObjectsOfType(typeof(WeatherParticles)) as WeatherParticles[];
+            for (var i = 0; i < dummylist.Length; i++)
+            {
+                Debug.Log(dummylist[i].name);
+                Debug.Log(dummylist[i].gameObject.name);
+                if (dummylist[i].gameObject.name.Equals("Skybox Assets"))
+                {
+                    Debug.Log("test");
+                    Transform eclipseBase = dummylist[i].gameObject.transform.parent;
+                    eclipseBase.gameObject.SetActive(true);
+                    eclipseBase.Find("PP + Amb").gameObject.SetActive(false);
+                    eclipseBase.Find("Directional Light (SUN)").gameObject.SetActive(false);
+                }
+            }
+            dummylist = null;
         }
         public static void VanillaChanges()
         {

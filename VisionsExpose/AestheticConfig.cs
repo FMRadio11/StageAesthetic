@@ -15,6 +15,7 @@ namespace StageAesthetic
             PlainsChanges = AesConfig.Bind<bool>("A. Titanic Plains", "Alter vanilla Titanic Plains?", true, "Slightly increases lighting intensity, and forces it to line up with the stage's sun.");
             SunsetPlains = AesConfig.Bind<bool>("A. Titanic Plains", "Enable Sunset Plains?", true, "Gives the stage a darker, red-orange appearance along with heavily angled lighting.");
             RainyPlains = AesConfig.Bind<bool>("A. Titanic Plains", "Enable Rainy Plains?", true, "Gives the appearance of a light grey fog throughout the stage and adds rain.");
+            PlainsBridge = AesConfig.Bind<int>("A. Titanic Plains", "Bridge % Chance", 40, "How often the unused bridge in Titanic Plains should appear. Setting to 0 also disables the code to import it, in case you need it for something else.");
             VanillaRoost = AesConfig.Bind<bool>("B. Distant Roost", "Enable vanilla appearance?", true, "Disabling this will remove the vanilla stage appearance from randomization unless everything else is also disabled.");
             NightRoost = AesConfig.Bind<bool>("B. Distant Roost", "Enable Night Roost?", true, "Gives the stage a much darker appearance with an indigo color scheme, in addition to increasing the intensity and range of light effects in the stage. Also enables unused fog in default Distant Roost.");
             SunnyRoost = AesConfig.Bind<bool>("B. Distant Roost", "Enable Sunny Roost?", true, "Greatly alters lighting alongside a less blue fog to give the appearance of heavy sunlight. Also enables unused fog in default Distant Roost.");
@@ -48,7 +49,9 @@ namespace StageAesthetic
             MeadowChanges = AesConfig.Bind<bool>("J. Sky Meadow", "Alter vanilla Sky Meadow?", true, "Makes the sun a slightly more intense yellow-orange.");
             NightMeadow = AesConfig.Bind<bool>("J. Sky Meadow", "Enable Night Meadow?", true, "Gives the stage a darker blue color scheme and enables an unused star effect similar to that of Void Fields.");
             StormyMeadow = AesConfig.Bind<bool>("J. Sky Meadow", "Enable Stormy Meadow?", true, "Gives the stage a greyer color scheme and enables rain.");
-            CommencementAlt = AesConfig.Bind<bool>("K. Extras", "Commencement alt?", true, "Enables a darker, bluer color scheme on Commencement.");
+            CommencementAlt = AesConfig.Bind<bool>("K. Extras", "Commencement alt?", true, "Enables a darker, bluer color scheme on Commencement. Now additionally includes lighting changes and an unused sun object to match.");
+            //GildedAlt = AesConfig.Bind<bool>("K. Extras", "Gilded Coast rings?", true, "Enables the unused falling ring effect in Gilded Coast. May take a while to appear...");
+            TitleScene = AesConfig.Bind<bool>("K. Extras", "Alter title screen?", true, "Enables the title screen changes.");
             warning2 += "it's too late";
             WeatherEffects = AesConfig.Bind<bool>("K. Extras", "Import weather effects?", true, "Hooks into both the title screen and SceneCamera to import rain into other stages. Disabling this may help if performance is an issue.");
             if (VanillaPlains.Value) plainsList.Add("vanilla");

@@ -27,14 +27,20 @@ namespace StageAesthetic
         {
             if (scene.name == "title")
             {
+                // Doing this since the title sequence isn't covered by SceneDirector.Start
                 rainCheck = false;
-                var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
-                graphicBase.Find("Terrain").gameObject.SetActive(true);
-                graphicBase.Find("CU2 Props").gameObject.SetActive(true);
-                graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
-                var menuBase = GameObject.Find("MainMenu").transform;
+                // Title screen changes
+                if (TitleScene.Value)
+                {
+                    var graphicBase = GameObject.Find("HOLDER: Title Background").transform;
+                    graphicBase.Find("Terrain").gameObject.SetActive(true);
+                    graphicBase.Find("CU2 Props").gameObject.SetActive(true);
+                    graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
+                }
+                // Pulling the rain object
                 if (!rainEffect && WeatherEffects.Value)
                 {
+                    var menuBase = GameObject.Find("MainMenu").transform;
                     rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "rainClone", true);
                     rainEffect.transform.eulerAngles = new Vector3(90, 0, 0);
                     AesLog.LogInfo("Rain object stored in memory.");
@@ -45,6 +51,7 @@ namespace StageAesthetic
         {
             if (sceneCamera.cameraRigController)
             {
+                // Grabbing the scene camera's controller
                 SetRain(sceneCamera.cameraRigController, true, false);
             }
         }
@@ -52,8 +59,10 @@ namespace StageAesthetic
         {
             if (rainCheck)
             {
+                // Getting the two needed objects set up
                 Transform transform = cameraRigController.transform;
                 rainObj = GameObject.Find("rainClone(Clone)");
+                // Using the camera's xyz position to set the rain effect
                 if (rainObj) rainObj.transform.SetPositionAndRotation(lockPosition ? transform.position : rainEffect.transform.position, lockRotation ? transform.rotation : rainEffect.transform.rotation);
             }
         }
@@ -120,6 +129,19 @@ namespace StageAesthetic
                             AesLog.LogInfo("Rainy Plains loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
+                    }
+                    if (PlainsBridge.Value > 0)
+                    {
+                        int bridgeValue = Math.Min(PlainsBridge.Value - 1, 99);
+                        if (UnityEngine.Random.Range(bridgeValue, 100) <= bridgeValue)
+                        {
+                            Transform bridgeObject = GameObject.Find("HOLDER: Ruined Pieces").transform.Find("MiniBridge");
+                            bridgeObject.gameObject.SetActive(true);
+                            bridgeObject.position = new Vector3(264.8f, -117.1f, -148.6f);
+                            bridgeObject.eulerAngles = new Vector3(270, 277, 0);
+                            bridgeObject.localScale = new Vector3(3.64f, 3.64f, 3.64f);
+                            AesLog.LogInfo("Unused bridge loaded.");
+                        }
                     }
                     // Finally, the active variant is stored for the next time this stage is loaded.
                     plainsVariant = counter;
@@ -350,6 +372,11 @@ namespace StageAesthetic
                     }
                     meadowVariant = counter;
                 }
+                // Currently gives a null error
+                /*if (scenename == "goldshores" && GildedAlt.Value)
+                {
+                    GameObject.Find("GoldShoresSkybox").transform.GetChild(1).gameObject.SetActive(true);
+                }*/
             }
             else if (scenename == "moon2" && CommencementAlt.Value)
             {
@@ -363,12 +390,21 @@ namespace StageAesthetic
                 fog.fogColorMid.value = new Color(0.13f, 0.14f, 0.19f, 0.625f);
                 fog.fogColorEnd.value = new Color(0.2f, 0.21f, 0.27f, 1f);
                 fog.skyboxStrength.value = 0f;
+                // Currently gives a null error
+                /*Transform moonBase = GameObject.Find("HOLDER: Effects, Lights, Etc").transform;
+                Transform sunBase = moonBase.Find("Light Direction").Find("SunHolder");
+                sunBase.position = new Vector3(2400, 200, -2500);
+                sunBase.localScale = new Vector3(70, 100, 100);
+                Transform lightBase = moonBase.Find("Directional Light (SUN)");
+                lightBase.eulerAngles = new Vector3(7, 350, 2);
+                lightBase.gameObject.GetComponent<Light>().intensity = 1.2f;*/
             }
             else AesLog.LogWarning("Post process volume could not be found.");
             if (!epic && Run.instance.stageClearCount >= 5) GooLake.IgnoreThis(AestheticConfig.warning2);
         }
-        public static int networkCounter;
+        // Used for uh everything
         public static PostProcessVolume volume;
+        // All of these are set to -1 in order to allow all variants to spawn when first loaded
         public static int plainsVariant = -1;
         public static int roostVariant = -1;
         public static int wetlandVariant = -1;
@@ -380,51 +416,69 @@ namespace StageAesthetic
         public static int groveVariant = -1;
         public static int meadowVariant = -1;
         public static int currentVariant;
+        // Used to store a dummy volume to use in Commencement
         public static PostProcessProfile commencementVolume;
+        // Used for rain effect
         public static GameObject rainEffect;
         public static GameObject rainObj;
+        // Used during SceneCamera hook
         public static bool rainCheck;
+        // Custom log
         internal static BepInEx.Logging.ManualLogSource AesLog;
-        public static ConfigEntry<bool> VanillaPlains;
-        public static ConfigEntry<bool> PlainsChanges;
-        public static ConfigEntry<bool> SunsetPlains;
-        public static ConfigEntry<bool> RainyPlains;
-        public static ConfigEntry<bool> VanillaRoost;
-        public static ConfigEntry<bool> SunnyRoost;
-        public static ConfigEntry<bool> NightRoost;
-        public static ConfigEntry<bool> VanillaWetland;
-        public static ConfigEntry<bool> SunsetWetland;
-        public static ConfigEntry<bool> SkyWetland;
-        public static ConfigEntry<bool> VanillaAqueduct;
-        public static ConfigEntry<bool> AqueductChanges;
-        public static ConfigEntry<bool> NightAqueduct;
-        public static ConfigEntry<bool> RainyAqueduct;
-        public static ConfigEntry<bool> VanillaDelta;
-        public static ConfigEntry<bool> NightDelta;
-        public static ConfigEntry<bool> FoggyDelta;
-        public static ConfigEntry<bool> VanillaAcres;
-        public static ConfigEntry<bool> AcresChanges;
-        public static ConfigEntry<bool> SunsetAcres;
-        public static ConfigEntry<bool> NightAcres;
-        public static ConfigEntry<bool> VanillaDepths;
-        public static ConfigEntry<bool> DepthsChanges;
-        public static ConfigEntry<bool> DarkDepths;
-        public static ConfigEntry<bool> SkyDepths;
-        public static ConfigEntry<bool> VanillaGrove;
-        public static ConfigEntry<bool> GreenGrove;
-        public static ConfigEntry<bool> SunnyGrove;
-        public static ConfigEntry<bool> VanillaSiren;
-        public static ConfigEntry<bool> NightSiren;
-        public static ConfigEntry<bool> SunnySiren;
-        public static ConfigEntry<bool> VanillaMeadow;
-        public static ConfigEntry<bool> MeadowChanges;
-        public static ConfigEntry<bool> NightMeadow;
-        public static ConfigEntry<bool> StormyMeadow;
+        // Plains
+        public static ConfigEntry<bool> VanillaPlains { get; set; }
+        public static ConfigEntry<bool> PlainsChanges { get; set; }
+        public static ConfigEntry<bool> SunsetPlains { get; set; }
+        public static ConfigEntry<bool> RainyPlains { get; set; }
+        public static ConfigEntry<int> PlainsBridge { get; set; }
+        // Roost
+        public static ConfigEntry<bool> VanillaRoost { get; set; }
+        public static ConfigEntry<bool> SunnyRoost { get; set; }
+        public static ConfigEntry<bool> NightRoost { get; set; }
+        // Wetland
+        public static ConfigEntry<bool> VanillaWetland { get; set; }
+        public static ConfigEntry<bool> SunsetWetland { get; set; }
+        public static ConfigEntry<bool> SkyWetland { get; set; }
+        // Aqueduct
+        public static ConfigEntry<bool> VanillaAqueduct { get; set; }
+        public static ConfigEntry<bool> AqueductChanges { get; set; }
+        public static ConfigEntry<bool> NightAqueduct { get; set; }
+        public static ConfigEntry<bool> RainyAqueduct { get; set; }
+        // Delta
+        public static ConfigEntry<bool> VanillaDelta { get; set; }
+        public static ConfigEntry<bool> NightDelta { get; set; }
+        public static ConfigEntry<bool> FoggyDelta { get; set; }
+        // Acres
+        public static ConfigEntry<bool> VanillaAcres { get; set; }
+        public static ConfigEntry<bool> AcresChanges { get; set; }
+        public static ConfigEntry<bool> SunsetAcres { get; set; }
+        public static ConfigEntry<bool> NightAcres { get; set; }
+        public static ConfigEntry<bool> EclipseAcres { get; set; }
+        // Depths
+        public static ConfigEntry<bool> VanillaDepths { get; set; }
+        public static ConfigEntry<bool> DepthsChanges { get; set; }
+        public static ConfigEntry<bool> DarkDepths { get; set; }
+        public static ConfigEntry<bool> SkyDepths { get; set; }
+        // Grove
+        public static ConfigEntry<bool> VanillaGrove { get; set; }
+        public static ConfigEntry<bool> GreenGrove { get; set; }
+        public static ConfigEntry<bool> SunnyGrove { get; set; }
+        // Siren
+        public static ConfigEntry<bool> VanillaSiren { get; set; }
+        public static ConfigEntry<bool> NightSiren { get; set; }
+        public static ConfigEntry<bool> SunnySiren { get; set; }
+        // Meadow
+        public static ConfigEntry<bool> VanillaMeadow { get; set; }
+        public static ConfigEntry<bool> MeadowChanges { get; set; }
+        public static ConfigEntry<bool> NightMeadow { get; set; }
+        public static ConfigEntry<bool> StormyMeadow { get; set; }
+        // Base Config
         public static ConfigFile AesConfig { get; set; }
         public static ConfigEntry<bool> CommencementAlt { get; set; }
-        public static ConfigEntry<bool> VoidAlt;
-        public static ConfigEntry<bool> GildedAlt;
+        public static ConfigEntry<bool> GildedAlt { get; set; }
+        public static ConfigEntry<bool> TitleScene { get; set; }
         public static ConfigEntry<bool> WeatherEffects { get; set; }
+        // String lists for config
         public static List<String> plainsList = new List<string>();
         public static List<String> roostList = new List<string>();
         public static List<String> wetlandList = new List<string>();
@@ -435,6 +489,7 @@ namespace StageAesthetic
         public static List<String> groveList = new List<string>();
         public static List<String> sirenList = new List<string>();
         public static List<String> meadowList = new List<string>();
+        // don't worry about this :)
         public static bool epic = false;
     }
 }
