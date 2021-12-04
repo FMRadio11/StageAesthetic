@@ -1,9 +1,7 @@
-## GITHUB NOTES
-- If you see files from the 0.0.5 and 0.0.6 updates, ignore those - they're redundant with the new file directory.
-
 ## OVERVIEW
 - All normal stages except for Commencement (so not including any Hidden Realms or other stages that don't advance the stage count once you clear them) will roll for either vanilla or a variant. Commencement has a single variant that will always be on. If desired, any color scheme (including the vanilla stage) can be disabled in config.
 - If a variant is selected, changes are made to post-processing (mostly RampFog), global lighting, and (if needed) individual props to alter the stage's appearance. For example, the variants included for Titanic Plains are inspired from various trailers - an orange one from very early footage of the game, and an overcast one vaguely similar to the console trailer.
+- Once a variant is used, it cannot be chosen for the next time the stage is loaded unless there are no other options.
 - Some unused stage props (most notably the border statues in Abandoned Aqueduct) may be enabled.
 
 ## TODO
@@ -18,12 +16,19 @@ I've taken down my modding server for now. If you have questions, message me on 
 ## KNOWN BUGS
 - Light effects on the crystals in Night Distant Roost do not have shadows. This is vanilla behavior, and I've decided to leave it in to aid visibility
 - Embers still appear in Night Scorched Acres despite it being raining. I've had no luck so far trying to disable them, so...
-- Certain stages still have clashing spots on the skybox, notably Distant Roost and especially Rallypoint Delta
+- Certain stages still have clashing spots on the skybox. Probably most notable in Rallypoint Delta
 - The water in Rallypoint Delta does not change color with the stage. I have no idea how to fix this
 
 ### Shoutout to HIFU for helping me get lighting effects working and providing some templates!
 
 ## CHANGELOG
+
+### 0.1.1
+- FASJDKAKSGLK I forgot to add menu config
+- Added randomization of unused bridge in default Titanic Plains (located behind the hill between the two cliffs), config separate from Vanilla Plains changes
+- Look for some other unused stuff in the future once I can figure out why they're refusing to exist
+- Wrote config incorrectly in 0.1.0. Hopefully you won't need to make a new file for it, though
+- Cleaned up description a bit
 
 ### 0.1.0
 - A Lot Happened
