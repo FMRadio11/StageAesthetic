@@ -1,3 +1,5 @@
+NOTE: I don't plan on fixing networking issues until I actually understand how networking even functions in RoR2
+
 ## OVERVIEW
 - All normal stages except for Commencement (so not including any Hidden Realms or other stages that don't advance the stage count once you clear them) will roll for either vanilla or a variant. Commencement has a single variant that will always be on. If desired, any color scheme (including the vanilla stage) can be disabled in config.
 - If a variant is selected, changes are made to post-processing (mostly RampFog), global lighting, and (if needed) individual props to alter the stage's appearance. For example, the variants included for Titanic Plains are inspired from various trailers - an orange one from very early footage of the game, and an overcast one vaguely similar to the console trailer.
