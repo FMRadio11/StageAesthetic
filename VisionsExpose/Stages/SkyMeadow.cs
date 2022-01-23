@@ -66,6 +66,9 @@ namespace StageAesthetic.Stages
             sunLight.color = new Color(0.817f, 0.181f, 0, 0.367f);
             sunLight.intensity = 2;
             sunLight.shadowStrength = 0.55f;
+            lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
+            GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
+            GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
             if (Aesthetic.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(ember, Vector3.zero, Quaternion.identity);
             cgrade.colorFilter.value = new Color(1, 0.632f, 0.471f);
         }

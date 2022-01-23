@@ -16,7 +16,7 @@ namespace StageAesthetic.Stages
         }
         public static void HiveCave(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(63, 38, 70, 166);
+            fog.fogColorStart.value = new Color32(63, 38, 70, 84);
             fog.fogColorMid.value = new Color32(53, 86, 65, 205);
             fog.fogColorEnd.value = new Color32(51, 96, 46, 255);
             fog.fogOne.value = 0.129f;
@@ -25,19 +25,19 @@ namespace StageAesthetic.Stages
             sunLight.intensity = 0.5f;
             sunLight.shadowStrength = 0.3f;
             RampFog caveFog = GameObject.Find("HOLDER: Lighting, PP, Wind, Misc").transform.Find("DCPPInTunnels").gameObject.GetComponent<PostProcessVolume>().profile.GetSetting<RampFog>();
-            caveFog.fogColorStart.value = new Color32(58, 35, 60, 166);
-            caveFog.fogColorMid.value = new Color32(44, 74, 55, 205);
+            caveFog.fogColorStart.value = new Color32(58, 35, 60, 80);
+            caveFog.fogColorMid.value = new Color32(44, 74, 55, 184);
             caveFog.fogColorEnd.value = new Color32(40, 68, 53, 255);
-            cgrade.colorFilter.value = new Color32(131, 59, 112, 255);
+            cgrade.colorFilter.value = new Color32(192, 100, 208, 255);
             cgrade.colorFilter.overrideState = true;
             // Lighting: Magenta coral, orange otherwise
             LightChange("hive");
         }
         public static void DarkCave(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(74, 71, 119, 76);
-            fog.fogColorMid.value = new Color32(48, 75, 135, 161);
-            fog.fogColorEnd.value = new Color32(53, 141, 160, 255);
+            fog.fogColorStart.value = new Color32(76, 71, 119, 76);
+            fog.fogColorMid.value = new Color32(73, 90, 104, 175);
+            fog.fogColorEnd.value = new Color32(78, 94, 103, 255);
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(69, 201, 215, 255);
             sunLight.intensity = 1.2f;
@@ -47,9 +47,7 @@ namespace StageAesthetic.Stages
             caveFog.fogColorMid.value = new Color32(40, 68, 123, 161);
             caveFog.fogColorEnd.value = new Color32(46, 128, 148, 255);
             cgrade.colorFilter.value = new Color32(119, 207, 181, 255);
-            cgrade.gradingMode.value = GradingMode.LowDefinitionRange;
             cgrade.colorFilter.overrideState = true;
-            cgrade.gradingMode.overrideState = true;
             // Lighting: Blue coral, cyan or green lighting otherwise
             LightChange("azure");
         }
@@ -79,7 +77,7 @@ namespace StageAesthetic.Stages
             }
             else if (variant == "azure")
             {
-                coral = new Color(0.48f, 0.26f, 1, 1);
+                coral = new Color(0.188f, 0.444f, 0, 1);
                 chain = new Color(0.181f, 0.921f, 0.945f);
                 crystal = new Color(0f, 0.837f, 0.14f);
             }

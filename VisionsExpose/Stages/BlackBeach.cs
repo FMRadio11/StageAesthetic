@@ -40,12 +40,12 @@ namespace StageAesthetic.Stages
         public static void DarkBeach(RampFog fog, String scenename, GameObject rain, ColorGrading cgrade)
         {
             // Dark and purple, not much else to say here really
-            fog.fogColorStart.value = new Color32(24, 20, 43, 48);
-            fog.fogColorMid.value = new Color32(33, 25, 49, 150);
+            fog.fogColorStart.value = new Color32(24, 20, 43, 32);
+            fog.fogColorMid.value = new Color32(33, 25, 49, 130);
             fog.fogColorEnd.value = new Color32(43, 35, 62, 255);
             fog.skyboxStrength.value = 0.03f;
             fog.fogPower.value = 0.6f;
-            cgrade.colorFilter.value = new Color32(179, 162, 249, 255);
+            cgrade.colorFilter.value = new Color32(197, 182, 249, 255);
             cgrade.colorFilter.overrideState = true;
             var sunLight = GameObject.Find("Directional Light (SUN)").GetComponent<Light>();
             sunLight.color = new Color32(106, 69, 160, 255);

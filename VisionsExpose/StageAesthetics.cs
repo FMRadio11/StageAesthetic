@@ -4,7 +4,7 @@ using BepInEx;
 
 namespace StageAesthetic
 {
-    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.2.0")]
+    [BepInPlugin("com.FMRadio11.StageAesthetics", "StageAesthetics", "0.2.1")]
     [BepInDependency("com.KingEnderBrine.InLobbyConfig")]
     [R2APISubmoduleDependency(new string[]
     {

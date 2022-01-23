@@ -29,10 +29,10 @@ namespace StageAesthetic
             SkyWetland = AesConfig.Bind<bool>("C. Wetland Aspect", "Enable Sky Aspect?", true, "Gives the stage a pink appearance resembling that of Sky Meadow.");
             EveningWetland = AesConfig.Bind<bool>("C. Wetland Aspect", "Enable Dark Aspect?", true, "Gives the stage a greener, darker appearance with weaker lighting.");
             VanillaAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable vanilla?", true, "Disabling this will remove the vanilla stage appearance from randomization unless everything else is also disabled.");
-            NightAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Gives the stage a much darker appearance, using a murky brown instead of the usual peach coloration, and replaces the warning banners with unused statues.");
+            NightAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable Dark Aqueduct?", true, "Gives the stage a much darker appearance, using a murky brown instead of the usual peach coloration, and replaces the warning banners with unused statues.");
             RainyAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable Rainy Aqueduct?", true, "Gives the stage a blue-grey coloration and adds rain.");
             warning2 = "if you hear voices inside your head, ";
-            MistyAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable Haunted Aqueduct?", true, "Gives the stage a dark red coloration and adds heavy rain.");
+            MistyAqueduct = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Enable Night Aqueduct?", true, "Essentially a darker version of Rainy Aqueduct.");
             AqueductChanges = AesConfig.Bind<bool>("D. Abandoned Aqueduct", "Alter vanilla Abandoned Aqueduct?", true, "Makes the sun a slightly more intense yellow-orange, and changes its angle.");
             VanillaDelta = AesConfig.Bind<bool>("E. Rallypoint Delta", "Enable vanilla?", true, "Disabling this will remove the vanilla stage appearance from randomization unless everything else is also disabled.");
             NightDelta = AesConfig.Bind<bool>("E. Rallypoint Delta", "Enable Night Delta?", true, "Heavily darkens the fog while also making the skybox stronger, giving an appearance of post-sunset/pre-sunrise.");
@@ -73,6 +73,16 @@ namespace StageAesthetic
         public static String warning2;
         public static void ApplyConfig(Run obj)
         {
+            plainsList = new List<string>();
+            roostList = new List<string>();
+            wetlandList = new List<string>();
+            aqueductList = new List<string>();
+            deltaList = new List<string>();
+            acresList = new List<string>();
+            depthsList = new List<string>();
+            sirenList = new List<string>();
+            groveList = new List<string>();
+            meadowList = new List<string>();
             if (VanillaPlains.Value) plainsList.Add("vanilla");
             if (SunsetPlains.Value) plainsList.Add("sunset");
             if (RainyPlains.Value) plainsList.Add("rain");

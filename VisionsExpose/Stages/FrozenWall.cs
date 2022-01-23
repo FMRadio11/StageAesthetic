@@ -24,8 +24,8 @@ namespace StageAesthetic.Stages
         }
         public static void NightWall(RampFog fog, ColorGrading cgrade)
         {
-            fog.fogColorStart.value = new Color32(33, 33, 56, 160);
-            fog.fogColorMid.value = new Color32(38, 38, 55, 222);
+            fog.fogColorStart.value = new Color32(33, 33, 56, 76);
+            fog.fogColorMid.value = new Color32(38, 38, 55, 165);
             fog.fogColorEnd.value = new Color32(25, 24, 46, 255);
             fog.skyboxStrength.value = 0.7f;
             cgrade.colorFilter.value = new Color32(130, 123, 255, 255);
