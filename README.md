@@ -15,13 +15,39 @@ I've taken down my modding server for now. If you have questions, message me on 
 
 ## KNOWN BUGS
 - Light effects on the crystals in Night Distant Roost do not have shadows. This is vanilla behavior, and I've decided to leave it in to aid visibility
-- Embers still appear in Night Scorched Acres despite it being raining. I've had no luck so far trying to disable them, so...
 - Certain stages still have clashing spots on the skybox. Probably most notable in Rallypoint Delta
 - The water in Rallypoint Delta does not change color with the stage. I have no idea how to fix this
 
-### Shoutout to HIFU for helping me get lighting effects working and providing some templates!
+## Shoutouts
+- Everyone who provided variant ideas and helped me find stuff that enables them
+- sinai-dev for UnityExplorer. Seriously, this made stuff so much easier once I figured out the UI
+- KingEnderBrine for InLobbyConfig. If you haven't learned how to use this, it's fairly simple and makes config much easier to work with as an end user
 
 ## CHANGELOG
+
+### 0.2.1
+- Fixed Abandoned Aqueduct config descriptions
+- Fixed variant lists not being cleared during Run.Start. This wasn't needed before when lists were only built once, but is necessary now that it's done every run
+- Increased visibility in Night!Roost, Night!Delta, and especially Hive!Depths
+- Reworked Azure!Depths to not require Low Definition grading since Imp Overlord doesn't mix well with it
+- Added missing skybox effects to Abyssal!Meadow
+
+### 0.2.0
+- Apologies for this taking so long. Between school/family stuff coming up and DRG I haven't really worked on this much until around January
+- Added about 17 KB of code
+- Title screen now has altered rain/wind
+- Added in a new variant for most stages
+- Secret area in Abandoned Aqueduct now uses appropriate RampFog values
+- Stage lighting added to Abyssal Depths and Abandoned Aqueduct's secret area; existing stage lighting changes now use more compact code
+- Weather changes are now more expansive, including wind, heavier rain, and embers added as appropriate
+- Scorched Acres now uses effects from unused "Weather, Eclipse" assets
+- Added null check to unused bridge in Titanic Plains. Hopefully this should prevent it breaking interactables, although I was never able to reproduce this glitch during testing
+- Fixed Rallypoint Delta ocean level being raised in the wrong variant
+- Fixed vanilla changes not being turned off with config
+- Rewrote config text slightly. You can still use your old config file, but remaking it will look cleaner in-game
+- Now requires InLobbyConfig
+- Variant arrays are now written during Run.Start instead of Awake, allowing config changes to take effect immediately instead of after restart
+- Not really playtested much outside of recording values with UnityExplorer for coding, so I'm expecting some other issues
 
 ### 0.1.1
 - FASJDKAKSGLK I forgot to add menu config
