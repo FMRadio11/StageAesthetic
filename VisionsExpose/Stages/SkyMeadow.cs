@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 namespace StageAesthetic.Stages
 {
     class SkyMeadow
     {
-        public static void VanillaChanges()
+        public static void VanillaChanges(GameObject purple)
         {
             var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
             var sunTransform = lightBase.Find("Directional Light (SUN)");
@@ -15,8 +16,9 @@ namespace StageAesthetic.Stages
             sunLight.color = new Color32(239, 231, 211, 255);
             sunLight.intensity = 2f;
             sunLight.shadowStrength = 1f;
+            if (Aesthetic.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(purple, Vector3.zero, Quaternion.identity);
         }
-        public static void NightMeadow(RampFog fog)
+        public static void NightMeadow(RampFog fog, GameObject purple)
         {
             fog.fogColorStart.value = new Color32(38, 59, 69, 33);
             fog.fogColorMid.value = new Color32(12, 15, 59, 131);
@@ -32,6 +34,7 @@ namespace StageAesthetic.Stages
             lightBase.Find("CameraRelative").Find("SmallStars").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("ShatteredMoonMesh").gameObject.SetActive(false);
             GameObject.Find("SMSkyboxPrefab").transform.Find("MoonHolder").Find("MoonMesh").gameObject.SetActive(true);
+            if (Aesthetic.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(purple, Vector3.zero, Quaternion.identity);
         }
         public static void StormyMeadow(RampFog fog)
         {
@@ -48,6 +51,23 @@ namespace StageAesthetic.Stages
             sunLight.shadowStrength = 0.3f;
             lightBase.Find("CameraRelative").Find("Rain").gameObject.SetActive(true);
             GameObject.Find("SMSkyboxPrefab").transform.Find("SmallStars").gameObject.SetActive(false);
+        }
+        public static void EpicMeadow(RampFog fog, ColorGrading cgrade, GameObject ember)
+        {
+            fog.fogColorStart.value = new Color(0.176f, 0.019f, 0.013f, 0.3569f);
+            fog.fogColorMid.value = new Color(0.151f, 0.061f, 0, 0.775f);
+            fog.fogColorEnd.value = new Color(0.059f, 0f, 0f, 1);
+            fog.fogZero.value = -0.04f;
+            fog.fogOne.value = 0.27f;
+            fog.skyboxStrength.value = 0.05f;
+            var lightBase = GameObject.Find("HOLDER: Weather Set 1").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color(0.817f, 0.181f, 0, 0.367f);
+            sunLight.intensity = 2;
+            sunLight.shadowStrength = 0.55f;
+            if (Aesthetic.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(ember, Vector3.zero, Quaternion.identity);
+            cgrade.colorFilter.value = new Color(1, 0.632f, 0.471f);
         }
     }
 }

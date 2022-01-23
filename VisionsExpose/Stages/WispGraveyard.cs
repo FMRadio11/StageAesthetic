@@ -8,34 +8,43 @@ namespace StageAesthetic.Stages
 {
     class WispGraveyard
     {
-        public static void SunsetAcres(RampFog fog)
+        public static void SunsetAcres(RampFog fog, GameObject purple)
         {
-            fog.fogColorStart.value = new Color32(84, 51, 36, 9);
-            fog.fogColorMid.value = new Color32(97, 47, 35, 132);
-            fog.fogColorEnd.value = new Color32(107, 53, 32, 243);
-            fog.skyboxStrength.value = 0.126f;
+            fog.fogColorStart.value = new Color32(30, 16, 52, 64);
+            fog.fogColorMid.value = new Color32(62, 16, 47, 169);
+            fog.fogColorEnd.value = new Color32(84, 3, 68, 255);
+            fog.skyboxStrength.value = 0.076f;
             fog.fogZero.value = -0.019f;
             fog.fogOne.value = 0.211f;
             var lightBase = GameObject.Find("Weather, Wispgraveyard").transform;
+            if (Aesthetic.WeatherEffects.Value)
+            {
+                UnityEngine.Object.Instantiate<GameObject>(purple, Vector3.zero, Quaternion.identity);
+                lightBase.GetChild(1).GetChild(0).GetChild(0).gameObject.SetActive(false);
+            }
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
-            sunLight.color = new Color32(255, 98, 0, 255);
-            sunLight.intensity = 1f;
+            sunLight.color = new Color32(255, 0, 135, 255);
+            sunLight.intensity = 0.8f;
+            sunLight.shadowStrength = 0.55f;
             sunTransform.localEulerAngles = new Vector3(30, 198.5f, 218.841f);
             var sunBase = lightBase.Find("CameraRelative").Find("SunHolder").Find("Sphere");
+            Vector3 sunPosition = sunBase.parent.localPosition;
+            sunPosition.y = -67;
             Transform quad = sunBase.GetChild(1);
             quad.localScale = new Vector3(14, 14, 14);
             quad.localEulerAngles = new Vector3(270, 30, 0);
             quad.localPosition = new Vector3(0, 0, 0);
             sunBase.GetChild(0).gameObject.SetActive(false);
         }
-        public static void MoonAcres(RampFog fog, GameObject rain)
+        public static void MoonAcres(RampFog fog)
         {
             fog.fogColorStart.value = new Color32(45, 49, 75, 30);
             fog.fogColorMid.value = new Color32(26, 25, 62, 130);
             fog.fogColorEnd.value = new Color32(39, 32, 56, 255);
             fog.skyboxStrength.value = 0.03f;
             var lightBase = GameObject.Find("Weather, Wispgraveyard").transform;
+            lightBase.GetChild(1).GetChild(0).gameObject.SetActive(false); // embers
             var sunTransform = lightBase.Find("Directional Light (SUN)");
             Light sunLight = sunTransform.gameObject.GetComponent<Light>();
             sunLight.color = new Color32(173, 175, 245, 255);
@@ -43,7 +52,20 @@ namespace StageAesthetic.Stages
             sunLight.shadowStrength = 0.4f;
             sunLight.shadowBias = 0.05f;
             lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
-            if (AestheticConfig.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
+            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6];
+            if (eclipse != null)
+            {
+                eclipse.SetActive(true);
+                eclipse.transform.GetChild(1).gameObject.SetActive(false); // lighting
+                eclipse.transform.GetChild(2).gameObject.SetActive(false); // post-processing
+                eclipse.transform.GetChild(4).gameObject.SetActive(false); // weather
+                eclipse.transform.GetChild(3).GetChild(1).gameObject.SetActive(false);
+                eclipse.transform.GetChild(3).GetChild(2).gameObject.SetActive(true);
+                Vector3 moonPosition = eclipse.transform.GetChild(3).GetChild(2).position;
+                moonPosition.y = 263;
+                eclipse.transform.GetChild(3).GetChild(2).localScale = new Vector3(8, 8, 8);
+            }
+            /*
             var dummylist = UnityEngine.Object.FindObjectsOfType(typeof(WeatherParticles)) as WeatherParticles[];
             for (var i = 0; i < dummylist.Length; i++)
             {
@@ -58,7 +80,29 @@ namespace StageAesthetic.Stages
                     eclipseBase.Find("Directional Light (SUN)").gameObject.SetActive(false);
                 }
             }
-            dummylist = null;
+            dummylist = null;*/
+        }
+        public static void OddAcres(RampFog fog)
+        {
+            fog.fogColorStart.value = new Color32(70, 90, 84, 0);
+            fog.fogColorMid.value = new Color32(74, 99, 105, 130);
+            fog.fogColorEnd.value = new Color32(77, 113, 85, 255);
+            fog.skyboxStrength.value = 0;
+            var lightBase = GameObject.Find("Weather, Wispgraveyard").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color32(0, 255, 28, 255);
+            sunTransform.eulerAngles = new Vector3(76, 153, 218);
+            lightBase.Find("CameraRelative").Find("SunHolder").gameObject.SetActive(false);
+            lightBase.GetChild(1).GetChild(0).GetChild(0).gameObject.SetActive(false);
+            var eclipse = GameObject.Find("Weather, Wispgraveyard").scene.GetRootGameObjects()[6];
+            if (eclipse != null)
+            {
+                eclipse.SetActive(true);
+                eclipse.transform.GetChild(1).gameObject.SetActive(false); // lighting
+                eclipse.transform.GetChild(2).gameObject.SetActive(false); // post-processing
+                eclipse.transform.GetChild(4).GetChild(1).gameObject.SetActive(false); // dust
+            }
         }
         public static void VanillaChanges()
         {

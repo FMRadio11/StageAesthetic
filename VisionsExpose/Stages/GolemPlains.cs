@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using RoR2;
 
 namespace StageAesthetic.Stages
@@ -26,7 +27,7 @@ namespace StageAesthetic.Stages
             sunLight.shadowStrength = 0.877f;
             sunTransform.localEulerAngles = new Vector3(27, 268, 88);
         }
-        public static void RainyPlains(RampFog fog, GameObject rain)
+        public static void RainyPlains(RampFog fog, GameObject rain, String scenename)
         {
             fog.fogColorStart.value = new Color32(34, 45, 62, 18);
             fog.fogColorMid.value = new Color32(72, 84, 103, 165);
@@ -41,7 +42,58 @@ namespace StageAesthetic.Stages
             sunLight.intensity = 0.9f;
             sunLight.shadowStrength = 0.7f;
             sunTransform.localEulerAngles = new Vector3(50, 17, 270);
-            if (AestheticConfig.WeatherEffects.Value) UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
+            if (AestheticConfig.WeatherEffects.Value)
+            {
+                var rainParticle = rain.GetComponent<ParticleSystem>();
+                var epic = rainParticle.emission;
+                var epic2 = epic.rateOverTime;
+                epic.rateOverTime = new ParticleSystem.MinMaxCurve()
+                {
+                    constant = 900,
+                    constantMax = 900,
+                    constantMin = 240,
+                    curve = epic2.curve,
+                    curveMax = epic2.curveMax,
+                    curveMin = epic2.curveMax,
+                    curveMultiplier = epic2.curveMultiplier,
+                    mode = epic2.mode
+                };
+                var epic3 = rainParticle.colorOverLifetime;
+                epic3.enabled = false;
+                var epic4 = rainParticle.main;
+                epic4.scalingMode = ParticleSystemScalingMode.Shape;
+                rain.transform.eulerAngles = new Vector3(85, 145, 0);
+                rain.transform.localScale = new Vector3(14, 14, 1);
+                UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
+                if (scenename == "golemplains")
+                {
+                    GameObject wind = GameObject.Find("WindZone");
+                    wind.transform.eulerAngles = new Vector3(30, 145, 0);
+                    var windZone = wind.GetComponent<WindZone>();
+                    windZone.windMain = 0.4f;
+                    windZone.windTurbulence = 0.8f;
+                }
+            }
+        }
+        public static void NightPlains(RampFog fog, GameObject rain, ColorGrading cgrade)
+        {
+            fog.fogColorStart.value = new Color32(0, 166, 255, 255);
+            fog.fogColorMid.value = new Color32(51, 79, 94, 34);
+            fog.fogColorEnd.value = new Color32(12, 18, 54, 255);
+            fog.skyboxStrength.value = 0.08f;
+            fog.fogZero.value = 0f;
+            fog.fogOne.value = 1f;
+            fog.fogIntensity.value = 1f;
+            fog.fogPower.value = 0.06f;
+            cgrade.colorFilter.value = new Color32(180, 184, 255, 255);
+            var lightBase = GameObject.Find("Weather, Golemplains").transform;
+            var sunTransform = lightBase.Find("Directional Light (SUN)");
+            Light sunLight = sunTransform.gameObject.GetComponent<Light>();
+            sunLight.color = new Color32(0, 132, 255, 255);
+            sunLight.intensity = 2f;
+            sunLight.shadowStrength = 0.7f;
+            sunTransform.localEulerAngles = new Vector3(38, 270, 97);
+            UnityEngine.Object.Instantiate<GameObject>(rain, Vector3.zero, Quaternion.identity);
         }
         public static void VanillaChanges()
         { 

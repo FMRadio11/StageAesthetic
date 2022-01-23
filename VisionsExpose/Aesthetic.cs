@@ -15,10 +15,12 @@ namespace StageAesthetic
     {
         public static void Nice()
         {
+            // Setting up config and hooks before the game is actually loaded
             AestheticConfig.SetConfig();
             On.RoR2.SceneDirector.Start += new On.RoR2.SceneDirector.hook_Start(SceneDirector_Start);
             SceneManager.sceneLoaded += TitlePicker;
-            if (WeatherEffects.Value) SceneCamera.onSceneCameraPreRender += RainCamera;
+            SceneCamera.onSceneCameraPreRender += RainCamera;
+            Run.onRunStartGlobal += AestheticConfig.ApplyConfig;
             AesLog.LogMessage("Welcome to the latest update of StageAesthetics!");
             AesLog.LogMessage("Note that most of the code is run during the game itself, so just because no errors popped up here doesn't mean the mod will work.");
             AesLog.LogMessage("This has NOT been tested for cross-mod compatibility - if you're experiencing bugs that are disruptive enough to warrant a fix, sending BepInEx logs along with the bug report will make things easier. Also, note that Starstorm 2's weather and void effects will likely not mix well with this mod.");
@@ -29,6 +31,31 @@ namespace StageAesthetic
             {
                 // Doing this since the title sequence isn't covered by SceneDirector.Start
                 rainCheck = false;
+                var menuBase = GameObject.Find("MainMenu").transform;
+                // Pulling weather effects if they're enabled (this used to be part of the Weather Effects bool, but with InLobbyConfig being a thing now it'd NRE if this was disabled on load and then enabled in lobby without returning to the title screen)
+                if (!rainEffect)
+                {
+                    rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "rainT", true);
+                    rainEffect.transform.eulerAngles = new Vector3(90, 0, 0);
+                    AesLog.LogMessage("Rain stored in memory.");
+                }
+                if (!ember)
+                {
+                    var emberBase = GameObject.Find("HOLDER: Title Background").transform.Find("CU1 Props");
+                    emberBase.gameObject.SetActive(true);
+                    ember = PrefabAPI.InstantiateClone(emberBase.transform.GetChild(1).GetChild(0).gameObject, "emberT", true);
+                    quad = emberBase.transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject;
+                    emberBase.gameObject.SetActive(false);
+                    AesLog.LogMessage("Embers stored in memory.");
+                }
+                if (!purple)
+                {
+                    var purpleBase = GameObject.Find("HOLDER: Title Background").transform.Find("CU3 Props");
+                    purpleBase.gameObject.SetActive(true);
+                    purple = PrefabAPI.InstantiateClone(purpleBase.transform.GetChild(3).Find("Embers").gameObject, "purpleT", true);
+                    purpleBase.gameObject.SetActive(false);
+                    AesLog.LogMessage("Purple embers stored in memory.");
+                }
                 // Title screen changes
                 if (TitleScene.Value)
                 {
@@ -36,20 +63,33 @@ namespace StageAesthetic
                     graphicBase.Find("Terrain").gameObject.SetActive(true);
                     graphicBase.Find("CU2 Props").gameObject.SetActive(true);
                     graphicBase.Find("Misc Props").Find("DeadCommando").localPosition = new Vector3(16, -2f, 27);
-                }
-                // Pulling the rain object
-                if (!rainEffect && WeatherEffects.Value)
-                {
-                    var menuBase = GameObject.Find("MainMenu").transform;
-                    rainEffect = PrefabAPI.InstantiateClone(menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject, "rainClone", true);
-                    rainEffect.transform.eulerAngles = new Vector3(90, 0, 0);
-                    AesLog.LogInfo("Rain object stored in memory.");
+                    ParticleSystem menuRain = menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").gameObject.GetComponent<ParticleSystem>();
+                    var epic = menuRain.emission;
+                    Debug.Log("testing");
+                    var epic2 = epic.rateOverTime; // 30 constant, 30 constantmax, 0 constantmin, 0 curvemultiplier
+                    epic.rateOverTime = new ParticleSystem.MinMaxCurve()
+                    {
+                        constant = 100,
+                        constantMax = 100,
+                        constantMin = 60,
+                        curve = epic2.curve,
+                        curveMax = epic2.curveMax,
+                        curveMin = epic2.curveMax,
+                        curveMultiplier = epic2.curveMultiplier,
+                        mode = epic2.mode
+                    };
+                    var epic3 = menuRain.colorOverLifetime;
+                    epic3.enabled = false;
+                    menuBase.Find("MENU: Title").Find("World Position").Find("CameraPositionMarker").Find("Rain").eulerAngles = new Vector3(80, 90, 0);
+                    WindZone menuWind = GameObject.Find("HOLDER: Title Background").transform.Find("FX").Find("WindZone").gameObject.GetComponent<WindZone>();
+                    menuWind.windMain = 0.5f;
+                    menuWind.windTurbulence = 1;
                 }
             }
         }
         private static void RainCamera(SceneCamera sceneCamera)
         {
-            if (sceneCamera.cameraRigController)
+            if (sceneCamera.cameraRigController && WeatherEffects.Value)
             {
                 // Grabbing the scene camera's controller
                 SetRain(sceneCamera.cameraRigController, true, false);
@@ -57,13 +97,27 @@ namespace StageAesthetic
         }
         private static void SetRain(CameraRigController cameraRigController, bool lockPosition, bool lockRotation)
         {
-            if (rainCheck)
+            if (rainCheck || emberCheck || purpleCheck)
             {
                 // Getting the two needed objects set up
                 Transform transform = cameraRigController.transform;
-                rainObj = GameObject.Find("rainClone(Clone)");
-                // Using the camera's xyz position to set the rain effect
-                if (rainObj) rainObj.transform.SetPositionAndRotation(lockPosition ? transform.position : rainEffect.transform.position, lockRotation ? transform.rotation : rainEffect.transform.rotation);
+                if (rainCheck)
+                {
+                    rainObj = GameObject.Find("rainT(Clone)");
+                    // Using the camera's xyz position to set the rain effect
+                    if (rainObj) rainObj.transform.SetPositionAndRotation(lockPosition ? transform.position : rain.transform.position, lockRotation ? transform.rotation : rain.transform.rotation);
+                }
+                if (emberCheck)
+                {
+                    emberObj = GameObject.Find("emberT(Clone)");
+                    if (emberObj) emberObj.transform.SetPositionAndRotation(lockPosition ? transform.position : ember.transform.position, lockRotation ? transform.rotation : ember.transform.rotation);
+                }
+                if (purpleCheck)
+                {
+                    purpleObj = GameObject.Find("purpleT(Clone)");
+                    // Using the camera's xyz position to set the rain effect
+                    if (purpleObj) purpleObj.transform.SetPositionAndRotation(lockPosition ? transform.position : purple.transform.position, lockRotation ? transform.rotation : purple.transform.rotation);
+                }
             }
         }
         private static void SceneDirector_Start(On.RoR2.SceneDirector.orig_Start orig, SceneDirector self)
@@ -75,6 +129,10 @@ namespace StageAesthetic
         {
             // Disabling weather checks
             rainCheck = false;
+            emberCheck = false;
+            purpleCheck = false;
+            // Resetting rain object between stages
+            rain = rainEffect;
             // Loading in the current PostProcessVolume from SceneInfo
             SceneInfo currentScene = SceneInfo.instance;
             if (currentScene) volume = currentScene.GetComponent<PostProcessVolume>();
@@ -92,6 +150,9 @@ namespace StageAesthetic
             {
                 // Pretty much every variant uses RampFog, and it always shows up in the post-processing volume so it's put into an easy variable for transferring to other files.
                 RampFog fog = volume.profile.GetSetting<RampFog>();
+                // As of 0.1.2, I'm reintroducing color grading to help make some alts look better
+                ColorGrading cgrade = volume.profile.GetSetting<ColorGrading>();
+                if (cgrade == null) cgrade = cgrade = volume.profile.AddSettings<ColorGrading>();
                 // Commencement does not natively have a profile, so I'm borrowing it from the first stage in memory.
                 if (Run.instance.stageClearCount == 0 && CommencementAlt.Value)
                 {
@@ -125,8 +186,14 @@ namespace StageAesthetic
                         else if (plainsArray[counter] == "rain")
                         {
                             rainCheck = true;
-                            GolemPlains.RainyPlains(fog, rainEffect);
+                            GolemPlains.RainyPlains(fog, rain, scenename);
                             AesLog.LogInfo("Rainy Plains loaded.");
+                        }
+                        else if (plainsArray[counter] == "night")
+                        {
+                            rainCheck = true;
+                            GolemPlains.NightPlains(fog, rain, cgrade);
+                            AesLog.LogInfo("Night Plains loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -136,11 +203,14 @@ namespace StageAesthetic
                         if (UnityEngine.Random.Range(bridgeValue, 100) <= bridgeValue)
                         {
                             Transform bridgeObject = GameObject.Find("HOLDER: Ruined Pieces").transform.Find("MiniBridge");
-                            bridgeObject.gameObject.SetActive(true);
-                            bridgeObject.position = new Vector3(264.8f, -117.1f, -148.6f);
-                            bridgeObject.eulerAngles = new Vector3(270, 277, 0);
-                            bridgeObject.localScale = new Vector3(3.64f, 3.64f, 3.64f);
-                            AesLog.LogInfo("Unused bridge loaded.");
+                            if (bridgeObject != null)
+                            {
+                                bridgeObject.gameObject.SetActive(true);
+                                bridgeObject.position = new Vector3(264.8f, -117.1f, -148.6f);
+                                bridgeObject.eulerAngles = new Vector3(270, 277, 0);
+                                bridgeObject.localScale = new Vector3(3.64f, 3.64f, 3.64f);
+                                AesLog.LogInfo("Unused bridge loaded.");
+                            }
                         }
                     }
                     // Finally, the active variant is stored for the next time this stage is loaded.
@@ -154,16 +224,28 @@ namespace StageAesthetic
                     if (counter == roostList.Count) AesLog.LogError("Number generated is above the maximum value of the array. Please report this error if you see it!");
                     else
                     {
-                        if (roostArray[counter] == "vanilla") AesLog.LogInfo("Distant Roost loaded.");
+                        if (roostArray[counter] == "vanilla")
+                        {
+                            if (scenename == "blackbeach2" && RoostChanges.Value) rainCheck = true;
+                            if (RoostChanges.Value) BlackBeach.VanillaBeach(rain, scenename);
+                            AesLog.LogInfo("Distant Roost loaded.");
+                        }
                         else if (roostArray[counter] == "night")
                         {
-                            BlackBeach.DarkBeach(fog, scenename);
+                            if (scenename == "blackbeach2" && RoostChanges.Value) rainCheck = true;
+                            BlackBeach.DarkBeach(fog, scenename, rain, cgrade);
                             AesLog.LogInfo("Midnight Roost loaded.");
                         }
                         else if (roostArray[counter] == "sunny")
                         {
-                            BlackBeach.LightBeach(fog, scenename);
+                            BlackBeach.LightBeach(fog, scenename, cgrade);
                             AesLog.LogInfo("Sunny Roost loaded.");
+                        }
+                        else if (roostArray[counter] == "foggy")
+                        {
+                            rainCheck = true;
+                            BlackBeach.FoggyBeach(fog, scenename, rain);
+                            AesLog.LogInfo("Storm Roost loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -180,13 +262,21 @@ namespace StageAesthetic
                         if (wetlandArray[counter] == "vanilla") AesLog.LogInfo("Wetland Aspect loaded.");
                         else if (wetlandArray[counter] == "sunset")
                         {
-                            FoggySwamp.GoldSwamp(fog);
+                            emberCheck = true;
+                            FoggySwamp.GoldSwamp(fog, cgrade, ember);
                             AesLog.LogInfo("Sunset Aspect loaded.");
                         }
                         else if (wetlandArray[counter] == "sky")
                         {
-                            FoggySwamp.PinkSwamp(fog);
+                            purpleCheck = true;
+                            FoggySwamp.PinkSwamp(fog, cgrade, purple);
                             AesLog.LogInfo("Sky Meadow Aspect loaded.");
+                        }
+                        else if (wetlandArray[counter] == "dark")
+                        {
+                            rainCheck = true;
+                            FoggySwamp.MoreSwamp(fog, rain);
+                            AesLog.LogInfo("Dark Aspect loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -202,7 +292,7 @@ namespace StageAesthetic
                     {
                         if (aqueductArray[counter] == "vanilla")
                         {
-                            GooLake.VanillaChanges();
+                            if (AqueductChanges.Value) GooLake.VanillaChanges();
                             AesLog.LogInfo("Abandoned Aqueduct loaded.");
                         }
                         else if (aqueductArray[counter] == "night")
@@ -213,8 +303,14 @@ namespace StageAesthetic
                         else if (aqueductArray[counter] == "rain")
                         {
                             rainCheck = true;
-                            GooLake.BlueAqueduct(fog, rainEffect);
+                            GooLake.BlueAqueduct(fog, rain);
                             AesLog.LogInfo("Rainy Aqueduct loaded.");
+                        }
+                        else if (aqueductArray[counter] == "nightrain")
+                        {
+                            rainCheck = true;
+                            GooLake.NightAqueduct(fog, rain, cgrade);
+                            AesLog.LogInfo("Midnight Aqueduct loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -231,13 +327,18 @@ namespace StageAesthetic
                         if (deltaArray[counter] == "vanilla") AesLog.LogInfo("Rallypoint Delta loaded.");
                         else if (deltaArray[counter] == "night")
                         {
-                            FrozenWall.NightWall(fog);
-                            AesLog.LogInfo("Rallypoint Night loaded.");
+                            FrozenWall.NightWall(fog, cgrade);
+                            AesLog.LogInfo("Night Delta loaded.");
                         }
                         else if (deltaArray[counter] == "foggy")
                         {
                             FrozenWall.OceanWall(fog);
-                            AesLog.LogInfo("Rallypoint Fog loaded.");
+                            AesLog.LogInfo("Foggy Delta loaded.");
+                        }
+                        else if (deltaArray[counter] == "green")
+                        {
+                            FrozenWall.GreenWall(fog, cgrade);
+                            AesLog.LogInfo("Emerald Delta loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -253,19 +354,24 @@ namespace StageAesthetic
                     {
                         if (acresArray[counter] == "vanilla")
                         {
-                            WispGraveyard.VanillaChanges();
+                            if (AcresChanges.Value) WispGraveyard.VanillaChanges();
                             AesLog.LogInfo("Scorched Acres loaded.");
                         }
                         else if (acresArray[counter] == "sunset")
                         {
-                            WispGraveyard.SunsetAcres(fog);
+                            purpleCheck = true;
+                            WispGraveyard.SunsetAcres(fog, purple);
                             AesLog.LogInfo("Sunset Acres loaded.");
                         }
                         else if (acresArray[counter] == "night")
                         {
-                            rainCheck = true;
-                            WispGraveyard.MoonAcres(fog, rainEffect);
+                            WispGraveyard.MoonAcres(fog);
                             AesLog.LogInfo("Midnight Acres loaded.");
+                        }
+                        else if (acresArray[counter] == "nothing")
+                        {
+                            WispGraveyard.OddAcres(fog);
+                            AesLog.LogInfo("Sea Acres loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -281,18 +387,23 @@ namespace StageAesthetic
                     {
                         if (depthsArray[counter] == "vanilla")
                         {
-                            DampCaveSimple.VanillaChanges();
+                            if (DepthsChanges.Value) DampCaveSimple.VanillaChanges();
                             AesLog.LogInfo("Abyssal Depths loaded.");
                         }
-                        else if (depthsArray[counter] == "dark")
+                        else if (depthsArray[counter] == "hive")
                         {
-                            DampCaveSimple.DarkCave(fog);
-                            AesLog.LogInfo("Dark Depths loaded.");
+                            DampCaveSimple.HiveCave(fog, cgrade);
+                            AesLog.LogInfo("Hive Cluster Depths loaded.");
+                        }
+                        else if (depthsArray[counter] == "gold")
+                        {
+                            DampCaveSimple.DarkCave(fog, cgrade);
+                            AesLog.LogInfo("Azure Depths loaded.");
                         }
                         else if (depthsArray[counter] == "sky")
                         {
-                            rainCheck = true;
-                            DampCaveSimple.MeadowCave(fog, rainEffect);
+                            purpleCheck = true;
+                            DampCaveSimple.MeadowCave(fog, purple);
                             AesLog.LogInfo("Sky Meadow Depths loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
@@ -310,13 +421,19 @@ namespace StageAesthetic
                         if (sirenArray[counter] == "vanilla") AesLog.LogInfo("Siren's Call loaded.");
                         else if (sirenArray[counter] == "night")
                         {
-                            ShipGraveyard.ShipNight(fog);
+                            ShipGraveyard.ShipNight(fog, cgrade);
                             AesLog.LogInfo("Night's Call loaded.");
                         }
                         else if (sirenArray[counter] == "sunny")
                         {
                             ShipGraveyard.ShipSkies(fog);
                             AesLog.LogInfo("Siren's Sun loaded.");
+                        }
+                        else if (sirenArray[counter] == "storm")
+                        {
+                            rainCheck = true;
+                            ShipGraveyard.ShipDeluge(fog, rain);
+                            AesLog.LogInfo("Siren's Storm loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -333,13 +450,19 @@ namespace StageAesthetic
                         if (groveArray[counter] == "vanilla") AesLog.LogInfo("Sundered Grove loaded.");
                         else if (groveArray[counter] == "green")
                         {
-                            RootJungle.GreenJungle(fog);
+                            RootJungle.GreenJungle(fog, cgrade);
                             AesLog.LogInfo("Olive Grove loaded.");
                         }
                         else if (groveArray[counter] == "sunny")
                         {
-                            RootJungle.SunJungle(fog);
+                            RootJungle.SunJungle(fog, cgrade);
                             AesLog.LogInfo("Sunny Grove loaded.");
+                        }
+                        else if (groveArray[counter] == "storm")
+                        {
+                            rainCheck = true;
+                            RootJungle.StormJungle(fog, rain, cgrade);
+                            AesLog.LogInfo("Overcast Grove loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -355,18 +478,26 @@ namespace StageAesthetic
                     {
                         if (meadowArray[counter] == "vanilla")
                         {
-                            SkyMeadow.VanillaChanges();
+                            purpleCheck = true;
+                            if (MeadowChanges.Value) SkyMeadow.VanillaChanges(purple);
                             AesLog.LogInfo("Sky Meadow loaded.");
                         }
                         else if (meadowArray[counter] == "night")
                         {
-                            SkyMeadow.NightMeadow(fog);
+                            purpleCheck = true;
+                            SkyMeadow.NightMeadow(fog, purple);
                             AesLog.LogInfo("Night Meadow loaded.");
                         }
                         else if (meadowArray[counter] == "storm")
                         {
                             SkyMeadow.StormyMeadow(fog);
                             AesLog.LogInfo("Stormy Meadow loaded.");
+                        }
+                        else if (meadowArray[counter] == "abyss")
+                        {
+                            emberCheck = true;
+                            SkyMeadow.EpicMeadow(fog, cgrade, ember);
+                            AesLog.LogInfo("Abyssal Meadow loaded.");
                         }
                         else AesLog.LogError("Value selected does not line up with any existing variants. Please report this error if you see it!");
                     }
@@ -420,9 +551,17 @@ namespace StageAesthetic
         public static PostProcessProfile commencementVolume;
         // Used for rain effect
         public static GameObject rainEffect;
+        public static GameObject rain;
         public static GameObject rainObj;
+        public static GameObject ember;
+        public static GameObject emberObj;
+        public static GameObject purple;
+        public static GameObject purpleObj;
+        public static GameObject quad;
         // Used during SceneCamera hook
         public static bool rainCheck;
+        public static bool emberCheck;
+        public static bool purpleCheck;
         // Custom log
         internal static BepInEx.Logging.ManualLogSource AesLog;
         // Plains
@@ -430,48 +569,58 @@ namespace StageAesthetic
         public static ConfigEntry<bool> PlainsChanges { get; set; }
         public static ConfigEntry<bool> SunsetPlains { get; set; }
         public static ConfigEntry<bool> RainyPlains { get; set; }
+        public static ConfigEntry<bool> NightPlains { get; set; }
         public static ConfigEntry<int> PlainsBridge { get; set; }
         // Roost
         public static ConfigEntry<bool> VanillaRoost { get; set; }
+        public static ConfigEntry<bool> RoostChanges { get; set; }
         public static ConfigEntry<bool> SunnyRoost { get; set; }
         public static ConfigEntry<bool> NightRoost { get; set; }
+        public static ConfigEntry<bool> FoggyRoost { get; set; }
         // Wetland
         public static ConfigEntry<bool> VanillaWetland { get; set; }
         public static ConfigEntry<bool> SunsetWetland { get; set; }
         public static ConfigEntry<bool> SkyWetland { get; set; }
+        public static ConfigEntry<bool> EveningWetland { get; set; }
         // Aqueduct
         public static ConfigEntry<bool> VanillaAqueduct { get; set; }
         public static ConfigEntry<bool> AqueductChanges { get; set; }
         public static ConfigEntry<bool> NightAqueduct { get; set; }
         public static ConfigEntry<bool> RainyAqueduct { get; set; }
+        public static ConfigEntry<bool> MistyAqueduct { get; set; }
         // Delta
         public static ConfigEntry<bool> VanillaDelta { get; set; }
         public static ConfigEntry<bool> NightDelta { get; set; }
         public static ConfigEntry<bool> FoggyDelta { get; set; }
+        public static ConfigEntry<bool> PurpleDelta { get; set; }
         // Acres
         public static ConfigEntry<bool> VanillaAcres { get; set; }
         public static ConfigEntry<bool> AcresChanges { get; set; }
         public static ConfigEntry<bool> SunsetAcres { get; set; }
         public static ConfigEntry<bool> NightAcres { get; set; }
-        public static ConfigEntry<bool> EclipseAcres { get; set; }
+        public static ConfigEntry<bool> BlueAcres { get; set; }
         // Depths
         public static ConfigEntry<bool> VanillaDepths { get; set; }
         public static ConfigEntry<bool> DepthsChanges { get; set; }
         public static ConfigEntry<bool> DarkDepths { get; set; }
         public static ConfigEntry<bool> SkyDepths { get; set; }
+        public static ConfigEntry<bool> BlueDepths { get; set; }
         // Grove
         public static ConfigEntry<bool> VanillaGrove { get; set; }
         public static ConfigEntry<bool> GreenGrove { get; set; }
         public static ConfigEntry<bool> SunnyGrove { get; set; }
+        public static ConfigEntry<bool> HannibalGrove { get; set; }
         // Siren
         public static ConfigEntry<bool> VanillaSiren { get; set; }
         public static ConfigEntry<bool> NightSiren { get; set; }
         public static ConfigEntry<bool> SunnySiren { get; set; }
+        public static ConfigEntry<bool> MistySiren { get; set; }
         // Meadow
         public static ConfigEntry<bool> VanillaMeadow { get; set; }
         public static ConfigEntry<bool> MeadowChanges { get; set; }
         public static ConfigEntry<bool> NightMeadow { get; set; }
         public static ConfigEntry<bool> StormyMeadow { get; set; }
+        public static ConfigEntry<bool> CrimsonMeadow { get; set; }
         // Base Config
         public static ConfigFile AesConfig { get; set; }
         public static ConfigEntry<bool> CommencementAlt { get; set; }
