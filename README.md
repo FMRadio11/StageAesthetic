@@ -1,3 +1,5 @@
+On the off chance that people return to this repository after I release updates/new mods, THIS IS NO LONGER BEING WORKED ON. Hifu has taken over the project for now, and I see no reason to return to it with the new day/night system coming in SotS. I'll still leave this up for posterity's sake.
+
 NOTE: I don't plan on fixing networking issues until I actually understand how networking even functions in RoR2
 
 ## OVERVIEW
